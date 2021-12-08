@@ -1,0 +1,6 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/flowlet.p4 -> ./flowlet-clean.p4. Validating...
+done instrumentation in 762ms
+done primitive expansion in 911ms
+done integration in 906ms
+All set. To run bf4:
+p4c-analysis ./flowlet-integrated.p4

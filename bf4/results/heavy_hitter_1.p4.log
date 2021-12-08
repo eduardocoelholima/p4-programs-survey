@@ -1,0 +1,12 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/heavy_hitter_1.p4 -> ./heavy_hitter_1-clean.p4. Validating...
+done instrumentation in 608ms
+done primitive expansion in 710ms
+done integration in 783ms
+All set. To run bf4:
+p4c-analysis ./heavy_hitter_1-integrated.p4
+(@controlled void query_count_table_0<>(@matchKind in bit<32> count_table_0_hdr_ipv4_srcAddr, out bool __ret___hit, out bool __ret___reach, out flow_def_count_table_0__action_type_t __ret___action_run, out bit<32> __ret___count_action__idx, out bit<32> __ret___key_count_table_0_hdr_ipv4_srcAddr__val, out bit<32> __ret___key_count_table_0_hdr_ipv4_srcAddr__prefix))
+WHEN query_count_table_0(hdr_ParserImpl.ipv4.srcAddr:0, tmp_0_ingress.hit:1, tmp_0_ingress.reach:1, tmp_0_ingress.action_run:1, tmp_0_ingress.count_action__idx:1, tmp_0_ingress.key_count_table_0_hdr_ipv4_srcAddr__val:1, tmp_0_ingress.key_count_table_0_hdr_ipv4_srcAddr__prefix:1);
+AND (!tmp_0_ingress.hit:1 && !(tmp_0_ingress.action_run:1 == flow_def_count_table_0__action_type_t.NoAction_1) && !(tmp_0_ingress.action_run:1 == flow_def_count_table_0__action_type_t._drop_2) && tmp_0_ingress.action_run:1 == flow_def_count_table_0__action_type_t.count_action && tmp_0_ingress.count_action__idx:1 >= 1024;)
+(@controlled void query_count_table_0<>(@matchKind in bit<32> count_table_0_hdr_ipv4_srcAddr, out bool __ret___hit, out bool __ret___reach, out flow_def_count_table_0__action_type_t __ret___action_run, out bit<32> __ret___count_action__idx, out bit<32> __ret___key_count_table_0_hdr_ipv4_srcAddr__val, out bit<32> __ret___key_count_table_0_hdr_ipv4_srcAddr__prefix))
+WHEN query_count_table_0(hdr_ParserImpl.ipv4.srcAddr:0, tmp_0_ingress.hit:1, tmp_0_ingress.reach:1, tmp_0_ingress.action_run:1, tmp_0_ingress.count_action__idx:1, tmp_0_ingress.key_count_table_0_hdr_ipv4_srcAddr__val:1, tmp_0_ingress.key_count_table_0_hdr_ipv4_srcAddr__prefix:1);
+AND (tmp_0_ingress.hit:1 && !(tmp_0_ingress.action_run:1 == flow_def_count_table_0__action_type_t.NoAction_1) && !(tmp_0_ingress.action_run:1 == flow_def_count_table_0__action_type_t._drop_2) && tmp_0_ingress.action_run:1 == flow_def_count_table_0__action_type_t.count_action && tmp_0_ingress.count_action__idx:1 >= 1024;)

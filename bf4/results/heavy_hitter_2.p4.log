@@ -1,0 +1,6 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/heavy_hitter_2.p4 -> ./heavy_hitter_2-clean.p4. Validating...
+done instrumentation in 685ms
+done primitive expansion in 831ms
+done integration in 872ms
+All set. To run bf4:
+p4c-analysis ./heavy_hitter_2-integrated.p4

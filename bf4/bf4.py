@@ -7,18 +7,42 @@ import os
 import time
 import json
 
-compiler = 'ls'
-directory = '.'
-files = os.listdir(directory)
+success_counter, fail_counter = 0, 0
+command1 = ['python3','/home/ecl7037/code/bf4/sigcomm-2020/cleanup_v1.py']
+command2 = ['p4c-analysis']
+read_dir = '/home/ecl7037/code/p4-programs-survey/bf4/'
+build_dir = '/home/ecl7037/code/bf4/build/'
+results_dir = read_dir + 'results/'
+results_file = read_dir + 'out.json'
+files = os.listdir(read_dir)
 results = {}
-results_file = "out.json"
+fail_files = []
+
+# creates 'results/' subdir if it doesnt exist
+try:
+    subprocess.check_call(['mkdir','results'], cwd=read_dir, stderr=subprocess.DEVNULL)
+except:
+    pass
 
 for file in files:
-    results[file] = {}
-    start = time.time()
-    subprocess.check_call([compiler, file], stdout=subprocess.DEVNULL)
-    end = time.time()
-    results[file]['elapsed-ms'] = (end - start) * 1000
+    if file[-3:] == '.p4':
+        print(f'Reading {file}...')
+        results[file] = {}
+        start = time.time()
+        with open(results_dir+file+'.log', "a+") as f:
+            try:
+                # subprocess.check_call(['make','cptemplate'],cwd='/home/ecl7037/code/bf4/build/')
+                subprocess.check_call(command1 + [read_dir+file], stdout=f, stderr=subprocess.DEVNULL, cwd=build_dir)
+                # print(read_dir+file[:-3]+'-integrated.p4')
+                subprocess.check_call(command2 + [build_dir+file[:-3]+'-integrated.p4'], stdout=f, stderr=subprocess.DEVNULL, cwd=build_dir)
+                results[file]['success'] = True
+                success_counter += 1
+            except:
+                results[file]['success'] = False
+                fail_counter += 1
+                fail_files += [file]
+        end = time.time()
+        results[file]['elapsed-ms'] = (end - start) * 1000
 
 json_out = json.dumps(results, indent = 3)
 print(json_out)
@@ -26,10 +50,20 @@ print(json_out)
 with open(results_file, "w") as outfile:
     json.dump(results, outfile)
 
-# to read a json dump:
-with open(results_file, "r") as f:
-    json_in = json.load(f)
-print(json_in)
+print(f'Processed {success_counter}/{success_counter+fail_counter} files')
+print(f'Failed files: {fail_files}')
+
+
+
+## to read a json dump:
+#with open(results_file, "r") as f:
+#    json_in = json.load(f)
+#print(json_in)
+
+
+# example bf4 call
+#python3 ../sigcomm-2020/cleanup_v1.py simple_nat.p4
+#p4c-analysis ./simple_nat-integrated.p4 > simple_nat.log
 
 
 # if len(sys.argv) < 2:

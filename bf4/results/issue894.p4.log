@@ -1,0 +1,6 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/issue894.p4 -> ./issue894-clean.p4. Validating...
+done instrumentation in 707ms
+done primitive expansion in 850ms
+done integration in 891ms
+All set. To run bf4:
+p4c-analysis ./issue894-integrated.p4

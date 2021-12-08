@@ -1,0 +1,6 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/ndp_router_16.p4 -> ./ndp_router_16-clean.p4. Validating...
+done instrumentation in 707ms
+done primitive expansion in 928ms
+done integration in 975ms
+All set. To run bf4:
+p4c-analysis ./ndp_router_16-integrated.p4

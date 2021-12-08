@@ -1,0 +1,6 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/netpaxos_acceptor_16.p4 -> ./netpaxos_acceptor_16-clean.p4. Validating...
+done instrumentation in 609ms
+done primitive expansion in 902ms
+done integration in 885ms
+All set. To run bf4:
+p4c-analysis ./netpaxos_acceptor_16-integrated.p4

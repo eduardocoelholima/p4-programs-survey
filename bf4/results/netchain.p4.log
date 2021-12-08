@@ -1,0 +1,6 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/netchain.p4 -> ./netchain-clean.p4. Validating...
+done instrumentation in 1099ms
+done primitive expansion in 1598ms
+done integration in 1631ms
+All set. To run bf4:
+p4c-analysis ./netchain-integrated.p4

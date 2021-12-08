@@ -1,0 +1,6 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/linearroad_16.p4 -> ./linearroad_16-clean.p4. Validating...
+done instrumentation in 2248ms
+done primitive expansion in 4037ms
+done integration in 3502ms
+All set. To run bf4:
+p4c-analysis ./linearroad_16-integrated.p4
