@@ -1,0 +1,171 @@
+starting frontend
+./example1-integrated.p4(17): [--Wwarn=unknown] warning: Unknown annotation: readonly
+extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
+                                             ^^^^^^^^
+./example1-integrated.p4(32): [--Wwarn=unknown] warning: Unknown annotation: matchKind
+    @matchKind("exact")
+     ^^^^^^^^^
+./example1-integrated.p4(38): [--Wwarn=unknown] warning: Unknown annotation: controlled
+@controlled extern flow_def_t2_0 query_t2_0(@matchKind("exact") in bit<32> t2_0_hdr_ipv4_srcAddr, @matchKind("exact") in bit<32> t2_0_hdr_ipv4_dstAddr);
+ ^^^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(31): [--Wwarn=unknown] warning: Unknown annotation: metadata
+@metadata @name("standard_metadata")
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(59): [--Wwarn=unknown] warning: Unknown annotation: alias
+    @alias("queueing_metadata.enq_timestamp")
+     ^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(442): [--Wwarn=unknown] warning: Unknown annotation: pipeline
+@pipeline
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(460): [--Wwarn=unknown] warning: Unknown annotation: deparser
+@deparser
+ ^^^^^^^^
+./example1-integrated.p4(533): [--Wwarn=unknown] warning: Unknown annotation: noreturn
+@impl("parse_and_run_") @noreturn extern void parse_and_run(mutable_packet pin, inout metadata metas_, inout standard_metadata_t standard_meta);
+                         ^^^^^^^^
+frontend done in 1420ms
+done unrolling 0 36 in 0ms
+done graph buildup  1191 in 88ms, linking in 4ms
+done chaotic iterations 1191, iters: 1211 in 45 ms
+done constant propagation #nodes:1191 #vars:526 in 128ms
+done constant propagation and simplification #nodes:1191 vs 653 #foldings:158 in:170ms
+done unrolling 0 653 in 6ms
+intra-basic block simplifications 37ms
+done chaotic iterations 122, iters: 122 in 5 ms
+dom tree simplifications for 212,457/684
+dom tree simplifications for 212,0/227
+dom tree simplifications for 457/122 99ms
+simplified 4,464 if conditions
+boundaries computed: 8 in 1ms
+WARNING: __track_egress_spec_ingress:8 is not live at query_forward_0
+WARNING: __track_egress_spec_ingress:8 is not live at query_forward_0
+WARNING: __track_egress_spec_ingress:8 is not live at query_forward_0
+WARNING: __track_egress_spec_ingress:8 is not live at query_forward_0
+WARNING: __track_egress_spec_ingress:8 is not live at query_forward_0
+WARNING: __track_egress_spec_ingress:8 is not live at query_forward_0
+WARNING: __track_egress_spec_ingress:8 is not live at query_forward_0
+WARNING: __track_egress_spec_ingress:8 is not live at query_forward_0
+obtained specs: 16 in 45ms
+don't care reasoning done in 0 ms
+building parent decision tree 0ms
+partitioning __track_egress_spec_ingress:6 took 0ms
+refined decision tree __track_egress_spec_ingress:6 in 0ms
+partitioning hdrs__PSAImpl_ingress_start.ipv4.ttl:3 took 0ms
+refined decision tree hdrs__PSAImpl_ingress_start.ipv4.ttl:3 in 0ms
+partitioning metas__PSAImpl_ingress_start._custom_metadata_nhop_ipv40:3 took 0ms
+refined decision tree metas__PSAImpl_ingress_start._custom_metadata_nhop_ipv40:3 in 0ms
+partitioning standard_meta_PSAImpl_ingress_start.egress_spec:6 took 0ms
+refined decision tree standard_meta_PSAImpl_ingress_start.egress_spec:6 in 0ms
+building parent decision tree 0ms
+partitioning __track_egress_spec_ingress:3 took 0ms
+refined decision tree __track_egress_spec_ingress:3 in 0ms
+partitioning standard_meta_PSAImpl_ingress_start.egress_spec:3 took 0ms
+refined decision tree standard_meta_PSAImpl_ingress_start.egress_spec:3 in 0ms
+building parent decision tree 0ms
+partitioning __track_egress_spec_ingress:8 took 0ms
+refined decision tree __track_egress_spec_ingress:8 in 0ms
+partitioning standard_meta_PSAImpl_ingress_start.egress_spec:8 took 0ms
+refined decision tree standard_meta_PSAImpl_ingress_start.egress_spec:8 in 0ms
+building parent decision tree 0ms
+partitioning hdr_ParserImpl.ipv4.valid_:3 took 0ms
+refined decision tree hdr_ParserImpl.ipv4.valid_:3 in 0ms
+partitioning hdr_ParserImpl.tcp.valid_:3 took 0ms
+refined decision tree hdr_ParserImpl.tcp.valid_:3 in 0ms
+building parent decision tree 0ms
+partitioning hdrs__PSAImpl_egress_start.ipv4.valid_:4 took 0ms
+refined decision tree hdrs__PSAImpl_egress_start.ipv4.valid_:4 in 0ms
+partitioning standard_meta_PSAImpl_egress_start.egress_spec:3 took 0ms
+refined decision tree standard_meta_PSAImpl_egress_start.egress_spec:3 in 0ms
+building parent decision tree 0ms
+partitioning standard_meta_PSAImpl_egress_start.egress_spec:7 took 0ms
+refined decision tree standard_meta_PSAImpl_egress_start.egress_spec:7 in 0ms
+building parent decision tree 0ms
+partitioning hdrs__PSAImpl_egress_start.ethernet.valid_:4 took 0ms
+refined decision tree hdrs__PSAImpl_egress_start.ethernet.valid_:4 in 0ms
+partitioning standard_meta_PSAImpl_egress_start.egress_spec:5 took 0ms
+refined decision tree standard_meta_PSAImpl_egress_start.egress_spec:5 in 0ms
+slicing bug 0 131/190 took 5ms
+building parent decision tree 0ms
+partitioning hdr_ParserImpl.ipv4.valid_:3 took 0ms
+building parent decision tree 0ms
+partitioning __track_egress_spec_ingress:8 took 0ms
+refined decision tree __track_egress_spec_ingress:8 in 0ms
+partitioning standard_meta_PSAImpl_ingress_start.egress_spec:8 took 0ms
+refined decision tree standard_meta_PSAImpl_ingress_start.egress_spec:8 in 0ms
+building parent decision tree 0ms
+partitioning __track_egress_spec_ingress:6 took 0ms
+refined decision tree __track_egress_spec_ingress:6 in 0ms
+partitioning standard_meta_PSAImpl_ingress_start.egress_spec:6 took 0ms
+refined decision tree standard_meta_PSAImpl_ingress_start.egress_spec:6 in 0ms
+building parent decision tree 0ms
+partitioning __track_egress_spec_ingress:3 took 0ms
+refined decision tree __track_egress_spec_ingress:3 in 0ms
+partitioning standard_meta_PSAImpl_ingress_start.egress_spec:3 took 0ms
+refined decision tree standard_meta_PSAImpl_ingress_start.egress_spec:3 in 0ms
+building parent decision tree 0ms
+partitioning hdrs__PSAImpl_egress_start.ipv4.valid_:4 took 0ms
+refined decision tree hdrs__PSAImpl_egress_start.ipv4.valid_:4 in 0ms
+building parent decision tree 0ms
+partitioning hdrs__PSAImpl_egress_start.ethernet.valid_:4 took 0ms
+refined decision tree hdrs__PSAImpl_egress_start.ethernet.valid_:4 in 0ms
+check result:sat #assertions:187 time:8ms
+get model time:0ms
+sat in 1 iters, 1ms
+check result:sat #assertions:188 time:1ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:189 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:190 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:191 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:192 time:1ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:193 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:194 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:195 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:196 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:197 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:unsat #assertions:198 time:0ms
+without specs 11 bugs in 21ms
+check result:sat #assertions:203 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+slicing bug 14 22/22 took 0ms
+bug 14,missing fixes at table query_count_table_0: hdr_ParserImpl.ipv4.valid_:3
+check result:sat #assertions:204 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+slicing bug 13 22/41 took 1ms
+bug 13,missing fixes at table query_ipv4_lpm_0: hdr_ParserImpl.ipv4.valid_:3
+check result:sat #assertions:205 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+slicing bug 12 42/68 took 1ms
+check result:sat #assertions:206 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+slicing bug 2 26/48 took 1ms
+bug 2,missing fixes at table query_ipv4_lpm_0: hdr_ParserImpl.ipv4.valid_:3
+check result:sat #assertions:207 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+slicing bug 5 63/118 took 2ms
+bug 5,missing fixes at table query_send_frame_0: hdrs__PSAImpl_egress_start.ethernet.valid_:4
+check result:unsat #assertions:208 time:0ms
+with specs 5 bugs in 17ms
