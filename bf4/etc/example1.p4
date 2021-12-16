@@ -137,10 +137,11 @@ control egress(inout headers hdr, inout metadata meta, inout standard_metadata_t
     table t3 {
       key = {
         // k1: exact;
-        hdr.ipv4.srcAddr: exact;
+        // hdr.ipv4.srcAddr: exact;
         // k2: exact;
-        hdr.ipv4.dstAddr: exact;
+        // hdr.ipv4.dstAddr: exact;
         // k3: exact;
+        hdr.ipv4.srcAddr + hdr.ipv4.dstAddr: exact @name ("header1");
         hdr.ipv4.ttl: exact;
       }
       actions = {
