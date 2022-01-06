@@ -4,3 +4,21 @@ done primitive expansion in 928ms
 done integration in 975ms
 All set. To run bf4:
 p4c-analysis ./ndp_router_16-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/ndp_router_16.p4 -> ./ndp_router_16-clean.p4. Validating...
+done instrumentation in 715ms
+done primitive expansion in 935ms
+done integration in 981ms
+All set. To run bf4:
+p4c-analysis ./ndp_router_16-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/ndp_router_16.p4 -> ./ndp_router_16-clean.p4. Validating...
+done instrumentation in 719ms
+done primitive expansion in 946ms
+done integration in 998ms
+All set. To run bf4:
+p4c-analysis ./ndp_router_16-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/ndp_router_16.p4 -> ./ndp_router_16-clean.p4. Validating...
+done instrumentation in 724ms
+done primitive expansion in 956ms
+done integration in 988ms
+All set. To run bf4:
+p4c-analysis ./ndp_router_16-integrated.p4

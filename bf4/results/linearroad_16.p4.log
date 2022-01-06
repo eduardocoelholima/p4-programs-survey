@@ -4,3 +4,21 @@ done primitive expansion in 4037ms
 done integration in 3502ms
 All set. To run bf4:
 p4c-analysis ./linearroad_16-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/linearroad_16.p4 -> ./linearroad_16-clean.p4. Validating...
+done instrumentation in 2275ms
+done primitive expansion in 3999ms
+done integration in 3500ms
+All set. To run bf4:
+p4c-analysis ./linearroad_16-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/linearroad_16.p4 -> ./linearroad_16-clean.p4. Validating...
+done instrumentation in 2282ms
+done primitive expansion in 3992ms
+done integration in 3488ms
+All set. To run bf4:
+p4c-analysis ./linearroad_16-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/linearroad_16.p4 -> ./linearroad_16-clean.p4. Validating...
+done instrumentation in 2276ms
+done primitive expansion in 4071ms
+done integration in 3531ms
+All set. To run bf4:
+p4c-analysis ./linearroad_16-integrated.p4

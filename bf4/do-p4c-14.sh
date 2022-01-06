@@ -18,5 +18,5 @@ export P4C='p4c-bm2-ss'
 export P4C_ARGS='--p4runtime-files $BUILD_DIR/$basename.p4.p4info.txt'
 # $P4C --p4v 16 $P4C_ARGS -o $BUILD_DIR/$@ $<
 # $P4C --p4v 16 $P4C_ARGS -o $BUILD_DIR $basename.p4
-$P4C --p4v 14 $basename.p4 -o $basename.json
+$P4C --p4v 14 $basename.p4 -o compiled/$basename.json
 

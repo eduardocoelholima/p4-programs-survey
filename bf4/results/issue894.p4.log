@@ -4,3 +4,21 @@ done primitive expansion in 850ms
 done integration in 891ms
 All set. To run bf4:
 p4c-analysis ./issue894-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/issue894.p4 -> ./issue894-clean.p4. Validating...
+done instrumentation in 700ms
+done primitive expansion in 850ms
+done integration in 870ms
+All set. To run bf4:
+p4c-analysis ./issue894-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/issue894.p4 -> ./issue894-clean.p4. Validating...
+done instrumentation in 694ms
+done primitive expansion in 871ms
+done integration in 864ms
+All set. To run bf4:
+p4c-analysis ./issue894-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/issue894.p4 -> ./issue894-clean.p4. Validating...
+done instrumentation in 693ms
+done primitive expansion in 859ms
+done integration in 875ms
+All set. To run bf4:
+p4c-analysis ./issue894-integrated.p4

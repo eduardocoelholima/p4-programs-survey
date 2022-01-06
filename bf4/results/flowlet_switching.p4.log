@@ -1,1 +1,14 @@
 problems parsing /home/ecl7037/code/p4-programs-survey/bf4/flowlet_switching.p4
+problems parsing /home/ecl7037/code/p4-programs-survey/bf4/flowlet_switching.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/flowlet_switching.p4 -> ./flowlet_switching-clean.p4. Validating...
+done instrumentation in 743ms
+done primitive expansion in 899ms
+done integration in 931ms
+All set. To run bf4:
+p4c-analysis ./flowlet_switching-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/flowlet_switching.p4 -> ./flowlet_switching-clean.p4. Validating...
+done instrumentation in 828ms
+done primitive expansion in 917ms
+done integration in 919ms
+All set. To run bf4:
+p4c-analysis ./flowlet_switching-integrated.p4

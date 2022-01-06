@@ -4,3 +4,21 @@ done primitive expansion in 1610ms
 done integration in 1601ms
 All set. To run bf4:
 p4c-analysis ./netchain_16-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/netchain_16.p4 -> ./netchain_16-clean.p4. Validating...
+done instrumentation in 1108ms
+done primitive expansion in 1631ms
+done integration in 1642ms
+All set. To run bf4:
+p4c-analysis ./netchain_16-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/netchain_16.p4 -> ./netchain_16-clean.p4. Validating...
+done instrumentation in 1099ms
+done primitive expansion in 1630ms
+done integration in 1648ms
+All set. To run bf4:
+p4c-analysis ./netchain_16-integrated.p4
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/netchain_16.p4 -> ./netchain_16-clean.p4. Validating...
+done instrumentation in 1132ms
+done primitive expansion in 1620ms
+done integration in 1636ms
+All set. To run bf4:
+p4c-analysis ./netchain_16-integrated.p4
