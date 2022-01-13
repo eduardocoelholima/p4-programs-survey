@@ -1,0 +1,70 @@
+starting frontend
+./example4b1-integrated.p4(17): [--Wwarn=unknown] warning: Unknown annotation: readonly
+extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
+                                             ^^^^^^^^
+./example4b1-integrated.p4(31): [--Wwarn=unknown] warning: Unknown annotation: matchKind
+    @matchKind("exact")
+     ^^^^^^^^^
+./example4b1-integrated.p4(35): [--Wwarn=unknown] warning: Unknown annotation: controlled
+@controlled extern flow_def_t2_0 query_t2_0(@matchKind("exact") in bool t2_0_hdr_ipv4_2__valid_);
+ ^^^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(31): [--Wwarn=unknown] warning: Unknown annotation: metadata
+@metadata @name("standard_metadata")
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(59): [--Wwarn=unknown] warning: Unknown annotation: alias
+    @alias("queueing_metadata.enq_timestamp")
+     ^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(442): [--Wwarn=unknown] warning: Unknown annotation: pipeline
+@pipeline
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(460): [--Wwarn=unknown] warning: Unknown annotation: deparser
+@deparser
+ ^^^^^^^^
+./example4b1-integrated.p4(301): [--Wwarn=unknown] warning: Unknown annotation: noreturn
+@impl("parse_and_run_") @noreturn extern void parse_and_run(mutable_packet pin, inout metadata metas_, inout standard_metadata_t standard_meta);
+                         ^^^^^^^^
+frontend done in 1218ms
+done unrolling 0 37 in 0ms
+done graph buildup  1235 in 69ms, linking in 4ms
+done chaotic iterations 1235, iters: 1245 in 44 ms
+done constant propagation #nodes:1235 #vars:567 in 132ms
+done constant propagation and simplification #nodes:1235 vs 642 #foldings:179 in:173ms
+done unrolling 0 642 in 6ms
+intra-basic block simplifications 42ms
+done chaotic iterations 50, iters: 50 in 4 ms
+dom tree simplifications for 161,478/562
+dom tree simplifications for 161,0/84
+dom tree simplifications for 478/50 60ms
+simplified 3,490 if conditions
+boundaries computed: 4 in 0ms
+obtained specs: 6 in 10ms
+don't care reasoning done in 0 ms
+building parent decision tree 0ms
+partitioning hdr_ParserImpl.ipv4.valid_:3 took 0ms
+refined decision tree hdr_ParserImpl.ipv4.valid_:3 in 0ms
+partitioning hdr_ParserImpl.tcp.valid_:3 took 0ms
+refined decision tree hdr_ParserImpl.tcp.valid_:3 in 0ms
+slicing bug 0 38/61 took 1ms
+building parent decision tree 0ms
+partitioning hdr_ParserImpl.ipv4.valid_:3 took 0ms
+check result:sat #assertions:65 time:5ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:66 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:67 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:68 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:unsat #assertions:69 time:0ms
+without specs 4 bugs in 8ms
+check result:sat #assertions:71 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+slicing bug 4 22/30 took 0ms
+bug 4,missing fixes at table query_t3_0: hdr_ParserImpl.ipv4.valid_:3
+check result:unsat #assertions:72 time:0ms
+with specs 1 bugs in 1ms

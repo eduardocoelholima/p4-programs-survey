@@ -1,0 +1,24 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/example4d.p4 -> ./example4d-clean.p4. Validating...
+done instrumentation in 593ms
+done primitive expansion in 675ms
+done integration in 734ms
+All set. To run bf4:
+p4c-analysis ./example4d-integrated.p4
+(@controlled void query_t1_0<>(@matchKind in bit<16> t1_0_hdr_ethernet_etherType, out bool __ret___hit, out bool __ret___reach, out flow_def_t1_0__action_type_t __ret___action_run, out bit<16> __ret___key_t1_0_hdr_ethernet_etherType))
+WHEN query_t1_0(hdr_ParserImpl.ethernet.etherType:0, tmp_ingress.hit:1, tmp_ingress.reach:1, tmp_ingress.action_run:1, tmp_ingress.key_t1_0_hdr_ethernet_etherType:1);
+AND (!tmp_ingress.hit:1 && !(tmp_ingress.action_run:1 == flow_def_t1_0__action_type_t.NoAction_0) && !(tmp_ingress.action_run:1 == flow_def_t1_0__action_type_t._drop) && tmp_ingress.action_run:1 == flow_def_t1_0__action_type_t.use_H23;)
+(@controlled void query_t1_0<>(@matchKind in bit<16> t1_0_hdr_ethernet_etherType, out bool __ret___hit, out bool __ret___reach, out flow_def_t1_0__action_type_t __ret___action_run, out bit<16> __ret___key_t1_0_hdr_ethernet_etherType))
+WHEN query_t1_0(hdr_ParserImpl.ethernet.etherType:0, tmp_ingress.hit:1, tmp_ingress.reach:1, tmp_ingress.action_run:1, tmp_ingress.key_t1_0_hdr_ethernet_etherType:1);
+AND (tmp_ingress.hit:1 && !(tmp_ingress.action_run:1 == flow_def_t1_0__action_type_t.NoAction_0) && !(tmp_ingress.action_run:1 == flow_def_t1_0__action_type_t._drop) && tmp_ingress.action_run:1 == flow_def_t1_0__action_type_t.use_H23;)
+(@controlled void query_t2_0<>(@matchKind in bit<16> t2_0_hdr_ethernet_etherType, out bool __ret___hit, out bool __ret___reach, out flow_def_t2_0__action_type_t __ret___action_run, out bit<16> __ret___key_t2_0_hdr_ethernet_etherType))
+WHEN query_t2_0(hdr_ParserImpl.ethernet.etherType:0, tmp_0_ingress.hit:1, tmp_0_ingress.reach:1, tmp_0_ingress.action_run:1, tmp_0_ingress.key_t2_0_hdr_ethernet_etherType:1);
+AND (!tmp_0_ingress.hit:1 && !(tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.NoAction_4) && !(tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t._drop_3) && tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.use_H31;)
+(@controlled void query_t2_0<>(@matchKind in bit<16> t2_0_hdr_ethernet_etherType, out bool __ret___hit, out bool __ret___reach, out flow_def_t2_0__action_type_t __ret___action_run, out bit<16> __ret___key_t2_0_hdr_ethernet_etherType))
+WHEN query_t2_0(hdr_ParserImpl.ethernet.etherType:0, tmp_0_ingress.hit:1, tmp_0_ingress.reach:1, tmp_0_ingress.action_run:1, tmp_0_ingress.key_t2_0_hdr_ethernet_etherType:1);
+AND (tmp_0_ingress.hit:1 && !(tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.NoAction_4) && !(tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t._drop_3) && tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.use_H31;)
+(@controlled void query_t3_0<>(@matchKind in bit<16> t3_0_hdr_ethernet_etherType, out bool __ret___hit, out bool __ret___reach, out flow_def_t3_0__action_type_t __ret___action_run, out bit<16> __ret___key_t3_0_hdr_ethernet_etherType))
+WHEN query_t3_0(hdr_ParserImpl.ethernet.etherType:0, tmp_1_ingress.hit:1, tmp_1_ingress.reach:1, tmp_1_ingress.action_run:1, tmp_1_ingress.key_t3_0_hdr_ethernet_etherType:1);
+AND (!tmp_1_ingress.hit:1 && !(tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t.NoAction_5) && !(tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t._drop_4) && tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t.use_H12;)
+(@controlled void query_t3_0<>(@matchKind in bit<16> t3_0_hdr_ethernet_etherType, out bool __ret___hit, out bool __ret___reach, out flow_def_t3_0__action_type_t __ret___action_run, out bit<16> __ret___key_t3_0_hdr_ethernet_etherType))
+WHEN query_t3_0(hdr_ParserImpl.ethernet.etherType:0, tmp_1_ingress.hit:1, tmp_1_ingress.reach:1, tmp_1_ingress.action_run:1, tmp_1_ingress.key_t3_0_hdr_ethernet_etherType:1);
+AND (tmp_1_ingress.hit:1 && !(tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t.NoAction_5) && !(tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t._drop_4) && tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t.use_H12;)

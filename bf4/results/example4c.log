@@ -1,9 +1,9 @@
-cleaned up /home/ecl7037/code/p4-programs-survey/bf4/example3.p4 -> ./example3-clean.p4. Validating...
-done instrumentation in 567ms
-done primitive expansion in 656ms
-done integration in 715ms
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/example4c.p4 -> ./example4c-clean.p4. Validating...
+done instrumentation in 579ms
+done primitive expansion in 654ms
+done integration in 710ms
 All set. To run bf4:
-p4c-analysis ./example3-integrated.p4
+p4c-analysis ./example4c-integrated.p4
 (@controlled void query_t2_0<>(@matchKind in bit<16> t2_0_hdr_ethernet_etherType, out bool __ret___hit, out bool __ret___reach, out flow_def_t2_0__action_type_t __ret___action_run, out bit<16> __ret___key_t2_0_hdr_ethernet_etherType))
 (@controlled void query_t1_0<>(@matchKind in bit<16> t1_0_hdr_ethernet_etherType, out bool __ret___hit, out bool __ret___reach, out flow_def_t1_0__action_type_t __ret___action_run, out bit<16> __ret___key_t1_0_hdr_ethernet_etherType))
 WHEN query_t2_0(hdr_ParserImpl.ethernet.etherType:0, tmp_0_ingress.hit:1, tmp_0_ingress.reach:1, tmp_0_ingress.action_run:1, tmp_0_ingress.key_t2_0_hdr_ethernet_etherType:1);

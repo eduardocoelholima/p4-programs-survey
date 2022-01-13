@@ -1,11 +1,11 @@
 starting frontend
-./example3-integrated.p4(17): [--Wwarn=unknown] warning: Unknown annotation: readonly
+./example4c-integrated.p4(17): [--Wwarn=unknown] warning: Unknown annotation: readonly
 extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
                                              ^^^^^^^^
-./example3-integrated.p4(32): [--Wwarn=unknown] warning: Unknown annotation: matchKind
+./example4c-integrated.p4(32): [--Wwarn=unknown] warning: Unknown annotation: matchKind
     @matchKind("exact")
      ^^^^^^^^^
-./example3-integrated.p4(36): [--Wwarn=unknown] warning: Unknown annotation: controlled
+./example4c-integrated.p4(36): [--Wwarn=unknown] warning: Unknown annotation: controlled
 @controlled extern flow_def_t3_0 query_t3_0(@matchKind("exact") in bit<16> t3_0_hdr_ethernet_etherType);
  ^^^^^^^^^^
 /usr/local/share/p4c/p4include/v1model.p4(31): [--Wwarn=unknown] warning: Unknown annotation: metadata
@@ -20,24 +20,24 @@ extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
 /usr/local/share/p4c/p4include/v1model.p4(460): [--Wwarn=unknown] warning: Unknown annotation: deparser
 @deparser
  ^^^^^^^^
-./example3-integrated.p4(321): [--Wwarn=unknown] warning: Unknown annotation: noreturn
+./example4c-integrated.p4(321): [--Wwarn=unknown] warning: Unknown annotation: noreturn
 @impl("parse_and_run_") @noreturn extern void parse_and_run(mutable_packet pin, inout metadata metas_, inout standard_metadata_t standard_meta);
                          ^^^^^^^^
-frontend done in 1247ms
+frontend done in 1237ms
 done unrolling 0 38 in 0ms
-done graph buildup  1372 in 71ms, linking in 5ms
+done graph buildup  1372 in 72ms, linking in 5ms
 done chaotic iterations 1372, iters: 1383 in 52 ms
-done constant propagation #nodes:1372 #vars:656 in 149ms
-done constant propagation and simplification #nodes:1372 vs 730 #foldings:177 in:192ms
-done unrolling 0 730 in 7ms
+done constant propagation #nodes:1372 #vars:656 in 147ms
+done constant propagation and simplification #nodes:1372 vs 730 #foldings:177 in:191ms
+done unrolling 0 730 in 6ms
 intra-basic block simplifications 54ms
 done chaotic iterations 58, iters: 58 in 5 ms
 dom tree simplifications for 214,570/670
 dom tree simplifications for 214,0/100
-dom tree simplifications for 570/58 76ms
+dom tree simplifications for 570/58 77ms
 simplified 3,582 if conditions
 boundaries computed: 4 in 0ms
-obtained specs: 8 in 18ms
+obtained specs: 8 in 19ms
 don't care reasoning done in 0 ms
 building parent decision tree 0ms
 partitioning hdrs__PSAImpl_ingress_start.ipv4_2.valid_:3 took 0ms

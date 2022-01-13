@@ -1,0 +1,24 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/example4b1.p4 -> ./example4b1-clean.p4. Validating...
+done instrumentation in 561ms
+done primitive expansion in 646ms
+done integration in 703ms
+All set. To run bf4:
+p4c-analysis ./example4b1-integrated.p4
+(@controlled void query_t1_0<>(@matchKind in bool t1_0_hdr_ipv4__valid_, out bool __ret___hit, out bool __ret___reach, out flow_def_t1_0__action_type_t __ret___action_run, out bool __ret___key_t1_0_hdr_ipv4__valid_))
+WHEN query_t1_0(hdr_ParserImpl.ipv4.valid_:3, tmp_ingress.hit:1, tmp_ingress.reach:1, tmp_ingress.action_run:1, tmp_ingress.key_t1_0_hdr_ipv4__valid_:1);
+AND (!tmp_ingress.hit:1 && !(tmp_ingress.action_run:1 == flow_def_t1_0__action_type_t._drop) && tmp_ingress.action_run:1 == flow_def_t1_0__action_type_t.copy_ip_src;)
+(@controlled void query_t1_0<>(@matchKind in bool t1_0_hdr_ipv4__valid_, out bool __ret___hit, out bool __ret___reach, out flow_def_t1_0__action_type_t __ret___action_run, out bool __ret___key_t1_0_hdr_ipv4__valid_))
+WHEN query_t1_0(hdr_ParserImpl.ipv4.valid_:3, tmp_ingress.hit:1, tmp_ingress.reach:1, tmp_ingress.action_run:1, tmp_ingress.key_t1_0_hdr_ipv4__valid_:1);
+AND (tmp_ingress.hit:1 && !(tmp_ingress.action_run:1 == flow_def_t1_0__action_type_t._drop) && tmp_ingress.action_run:1 == flow_def_t1_0__action_type_t.copy_ip_src;)
+(@controlled void query_t2_0<>(@matchKind in bool t2_0_hdr_ipv4_2__valid_, out bool __ret___hit, out bool __ret___reach, out flow_def_t2_0__action_type_t __ret___action_run, out bool __ret___key_t2_0_hdr_ipv4_2__valid_))
+WHEN query_t2_0(0, tmp_0_ingress.hit:1, tmp_0_ingress.reach:1, tmp_0_ingress.action_run:1, tmp_0_ingress.key_t2_0_hdr_ipv4_2__valid_:1);
+AND (!tmp_0_ingress.hit:1 && !(tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t._drop_3) && tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.use_H12;)
+(@controlled void query_t2_0<>(@matchKind in bool t2_0_hdr_ipv4_2__valid_, out bool __ret___hit, out bool __ret___reach, out flow_def_t2_0__action_type_t __ret___action_run, out bool __ret___key_t2_0_hdr_ipv4_2__valid_))
+WHEN query_t2_0(0, tmp_0_ingress.hit:1, tmp_0_ingress.reach:1, tmp_0_ingress.action_run:1, tmp_0_ingress.key_t2_0_hdr_ipv4_2__valid_:1);
+AND (tmp_0_ingress.hit:1 && !(tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t._drop_3) && tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.use_H12;)
+(@controlled void query_t3_0<>(@matchKind in bit<32> t3_0_hdr_ipv4_srcAddr, out bool __ret___hit, out bool __ret___reach, out flow_def_t3_0__action_type_t __ret___action_run, out bit<8> __ret___set_ttl2__newTtl, out bit<32> __ret___key_t3_0_hdr_ipv4_srcAddr))
+WHEN query_t3_0(hdr_ParserImpl.ipv4.srcAddr:0, tmp_1_ingress.hit:1, tmp_1_ingress.reach:1, tmp_1_ingress.action_run:1, tmp_1_ingress.set_ttl2__newTtl:1, tmp_1_ingress.key_t3_0_hdr_ipv4_srcAddr:1);
+AND (!tmp_1_ingress.hit:1 && !(tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t.NoAction_5) && !(tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t._drop_4) && tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t.set_ttl2;)
+(@controlled void query_t3_0<>(@matchKind in bit<32> t3_0_hdr_ipv4_srcAddr, out bool __ret___hit, out bool __ret___reach, out flow_def_t3_0__action_type_t __ret___action_run, out bit<8> __ret___set_ttl2__newTtl, out bit<32> __ret___key_t3_0_hdr_ipv4_srcAddr))
+WHEN query_t3_0(hdr_ParserImpl.ipv4.srcAddr:0, tmp_1_ingress.hit:1, tmp_1_ingress.reach:1, tmp_1_ingress.action_run:1, tmp_1_ingress.set_ttl2__newTtl:1, tmp_1_ingress.key_t3_0_hdr_ipv4_srcAddr:1);
+AND (tmp_1_ingress.hit:1 && !(tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t.NoAction_5) && !(tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t._drop_4) && tmp_1_ingress.action_run:1 == flow_def_t3_0__action_type_t.set_ttl2;)

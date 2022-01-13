@@ -51,7 +51,6 @@ struct headers {
     ipv4_t     ipv4;
     tcp_t      tcp;
     ipv4_t     ipv4_2;
-    ipv4_t     ipv4_3;
 }
 
 
@@ -137,84 +136,92 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
     action _drop() {
         mark_to_drop(standard_metadata);
     }
-    action set_dmac(bit<48> dmac) {
-        hdr.ethernet.dstAddr = dmac;
-    }
-    action set_ttl1(bit<8> newTtl) {
-        hdr.ipv4.ttl = newTtl;
-    }
-    action set_ttl2(bit<8> newTtl) {
-        hdr.ipv4_2.ttl = newTtl;
-    }
-    action set_ttl3(bit<8> newTtl) {
-        hdr.ipv4_3.ttl = newTtl;
-    }
-    action decrement_ttl2() {
-        hdr.ipv4_2.ttl = hdr.ipv4_2.ttl - 1;
-    }
-    action decrement_ttl3() {
-        decrement_ttl2();
-        hdr.ipv4_3.ttl = hdr.ipv4_3.ttl - 1;
-    }
-    // action reset_ttl() {
-    //     if (hdr.ipv4.srcAddr == 0w32) {
-    //         hdr.ipv4.ttl = 8w0xFF;
-    //     }
+    // action set_dmac(bit<48> dmac) {
+    //     hdr.ethernet.dstAddr = dmac;
     // }
-    action copy_ip_src() {
-        hdr.ipv4.srcAddr = hdr.ipv4_2.srcAddr;
+    // action set_nhop(bit<32> nhop_ipv4, bit<9> port) {
+    //     meta.custom_metadata.nhop_ipv4 = nhop_ipv4;
+    //     standard_metadata.egress_spec = port;
+    //     hdr.ipv4.ttl = hdr.ipv4.ttl + 8w255;
+    // }
+
+    action decrement_ttl() {
+        hdr.ipv4.ttl = hdr.ipv4.ttl - 1;
     }
     action validate_H1() {
       hdr.ipv4.setValid();
     }
     action validate_H2() {
+      // hdr.ethernet.setValid();
       hdr.ipv4_2.setValid();
     }
-    action validate_H3() {
-      hdr.ipv4_3.setValid();
-    }
-    action validate_E() {
-      hdr.ethernet.setValid();
-    }
     action use_H12 () {
-        // hdr.ipv4_2.srcAddr = hdr.ipv4.srcAddr;
-        hdr.ipv4.srcAddr = hdr.ipv4_2.srcAddr;
+    //   hdr.ipv4.srcAddr = hdr.ipv4.dstAddr;
+        hdr.ipv4_2.srcAddr = hdr.ipv4.srcAddr;
+      // hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
     }
+
+    // table forward {
+    //     actions = {
+    //         set_dmac;
+    //         _drop;
+    //     }
+    //     key = {
+    //         meta.custom_metadata.nhop_ipv4: exact;
+    //     }
+    //     size = 512;
+    // }
+    // table ipv4_lpm {
+    //     actions = {
+    //         set_nhop;
+    //         _drop;
+    //     }
+    //     key = {
+    //         hdr.ipv4.dstAddr: lpm;
+    //     }
+    //     size = 1024;
+    // }
+
+    
 
     table t1 {
       key = {
-            hdr.ethernet.etherType: exact;
+        // hdr.ipv4.srcAddr: exact;
+        hdr.ethernet.etherType: exact;
       }
       actions = {
-        validate_H2;
+        decrement_ttl;
         _drop;
       }      
     }
-    table t2 {
-        key = {
-            hdr.ethernet.etherType: exact;
-        }
-        actions = {
-            validate_H3;
-            decrement_ttl2;
-            _drop;
-        }
-    }
-    table t3 {
-        key = {
-            hdr.ethernet.etherType: exact;
-        }
-        actions = {
-            decrement_ttl3;
-            _drop;
-        }
-    }
+    // table t2 {
+    //   key = {
+    //     hdr.ipv4.dstAddr: exact;
+    //   }
+    //   actions = {
+    //     validate_H2;
+    //     _drop;
+    //   }
+    // }
+    // table t3 {
+    //   key = {
+    //     // hdr.ipv4.srcAddr + hdr.ipv4.dstAddr: exact @name ("header1");
+    //     hdr.ipv4.dstAddr: exact;
+    //     // hdr.ipv4.ttl: exact;
+    //     hdr.ethernet.etherType: exact;
+    //   }
+    //   actions = {
+    //     use_H12;
+    //     // _drop;
+    //   }
+    // }
 
     apply {
+        // hdr.ipv4.setInvalid();
+        // hdr.ethernet.setInvalid();
         t1.apply();
-        t2.apply();
-        t3.apply();
-        standard_metadata.egress_spec = 9w5;
+        // t2.apply();
+        // t3.apply();
     }
 
     // apply {

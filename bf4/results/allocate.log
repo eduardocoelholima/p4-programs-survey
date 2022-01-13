@@ -1,0 +1,6 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/allocate.p4 -> ./allocate-clean.p4. Validating...
+done instrumentation in 463ms
+done primitive expansion in 608ms
+done integration in 710ms
+All set. To run bf4:
+p4c-analysis ./allocate-integrated.p4

@@ -83,53 +83,8 @@ control egress(inout headers hdr, inout metadata meta, inout standard_metadata_t
     action _drop() {
         mark_to_drop(standard_metadata);
     }
-    // action validate_H1() {
-    //   hdr.ipv4.setValid();
-    // }
-    // action validate_H2() {
-    //   // hdr.ethernet.setValid();
-    //   hdr.ipv4.setValid();
-    // }
-    // action use_H12 () {
-    //   hdr.ipv4.srcAddr = hdr.ipv4.dstAddr;
-    //   // hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
-    // }
-
-    // table t1 {
-    //   key = {
-    //     hdr.ipv4.srcAddr: exact;
-    //   }
-    //   actions = {
-    //     validate_H1;
-    //     _drop;
-    //   }      
-    // }
-    // table t2 {
-    //   key = {
-    //     hdr.ipv4.dstAddr: exact;
-    //   }
-    //   actions = {
-    //     validate_H2;
-    //     _drop;
-    //   }
-    // }
-    // table t3 {
-    //   key = {
-    //     hdr.ipv4.srcAddr + hdr.ipv4.dstAddr: exact @name ("header1");
-    //     hdr.ipv4.ttl: exact;
-    //   }
-    //   actions = {
-    //     use_H12;
-    //     // _drop;
-    //   }
-    // }
 
     apply {
-    //     // hdr.ipv4.setInvalid();
-    //     hdr.ethernet.setInvalid();
-    //     t1.apply();
-    //     t2.apply();
-    //     t3.apply();
     }
 }
 
@@ -153,14 +108,8 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
         hdr.ipv4_2.ttl = hdr.ipv4_2.ttl - 1;
     }
     action decrement_ttl3() {
-        decrement_ttl2();
         hdr.ipv4_3.ttl = hdr.ipv4_3.ttl - 1;
     }
-    // action reset_ttl() {
-    //     if (hdr.ipv4.srcAddr == 0w32) {
-    //         hdr.ipv4.ttl = 8w0xFF;
-    //     }
-    // }
     action copy_ip_src() {
         hdr.ipv4.srcAddr = hdr.ipv4_2.srcAddr;
     }
@@ -177,8 +126,16 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
       hdr.ethernet.setValid();
     }
     action use_H12 () {
-        // hdr.ipv4_2.srcAddr = hdr.ipv4.srcAddr;
+        hdr.ipv4_3.srcAddr = hdr.ipv4.srcAddr;
+        hdr.ipv4_3.srcAddr = hdr.ipv4_2.srcAddr;
+    }
+    action use_H23 () {
         hdr.ipv4.srcAddr = hdr.ipv4_2.srcAddr;
+        hdr.ipv4.srcAddr = hdr.ipv4_3.srcAddr;
+    }
+    action use_H31 () {
+        hdr.ipv4_2.srcAddr = hdr.ipv4_3.srcAddr;
+        hdr.ipv4_2.srcAddr = hdr.ipv4.srcAddr;
     }
 
     table t1 {
@@ -186,7 +143,8 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
             hdr.ethernet.etherType: exact;
       }
       actions = {
-        validate_H2;
+        validate_H1;
+        use_H23;
         _drop;
       }      
     }
@@ -195,8 +153,8 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
             hdr.ethernet.etherType: exact;
         }
         actions = {
-            validate_H3;
-            decrement_ttl2;
+            validate_H2;
+            use_H31;
             _drop;
         }
     }
@@ -205,7 +163,8 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
             hdr.ethernet.etherType: exact;
         }
         actions = {
-            decrement_ttl3;
+            validate_H3;
+            use_H12;
             _drop;
         }
     }
@@ -217,10 +176,6 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
         standard_metadata.egress_spec = 9w5;
     }
 
-    // apply {
-    //     ipv4_lpm.apply();
-    //     forward.apply();
-    // }
 }
 
 control DeparserImpl(packet_out packet, in headers hdr) {
@@ -268,65 +223,6 @@ control computeChecksum(inout headers hdr, inout metadata meta) {
         HashAlgorithm.csum16);
     }
 }
-
-// control break_bf4(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
-
-// action validate_H1() {
-//   hdr.ipv4.setValid();
-// }
-
-// action validate_H2() {
-//   hdr.ethernet.setValid();
-// }
-
-// action use_H12 () {
-//   hdr.ipv4.srcAddr = hdr.ipv4.dstAddr;
-//   hdr.ethernet.srcAddr = hdr.ethernet.dstAddr;
-// }
-
-
-// table t1 {
-//   key = {
-//     hdr.ipv4.srcAddr: exact;
-//   }
-//   actions = {
-//     validate_H1;
-//     mark_to_drop(standard_metadata);
-//   }      
-// }
-
-// table t2 {
-//   key = {
-//     hdr.ipv4.srcAddr: exact;
-//     hdr.ipv4.dstAddr: exact;
-//   }
-//   actions = {
-//     validate_H2;
-//     mark_to_drop(standard_metadata);
-//   }
-// }
-
-// table t3 {
-//   key = {
-//     hdr.ipv4.srcAddr: exact;
-//     hdr.ipv4.dstAddr: exact;
-//     hdr.ipv4.ttl: exact;
-//   }
-//   actions = {
-//     use_H12;
-//   }
-// }
-
-
-// apply{
-//     hdr.ipv4.setInvalid();
-//     hdr.ethernet.setInvalid();
-//     t1.apply();
-//     t2.apply();
-//     t3.apply();
-//   }
-
-// }
 
 V1Switch(ParserImpl(), verifyChecksum(), ingress(), egress(), computeChecksum(), DeparserImpl()) main;
 

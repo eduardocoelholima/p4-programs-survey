@@ -1,11 +1,14 @@
+/home/ecl7037/code/p4-programs-survey/bf4/example4b2.p4(133): [--Wwarn=unused] warning: Table t1 is not used; removing
+    table t1 {
+          ^^
 starting frontend
-./example3-integrated.p4(17): [--Wwarn=unknown] warning: Unknown annotation: readonly
+./example4b2-integrated.p4(17): [--Wwarn=unknown] warning: Unknown annotation: readonly
 extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
                                              ^^^^^^^^
-./example3-integrated.p4(32): [--Wwarn=unknown] warning: Unknown annotation: matchKind
+./example4b2-integrated.p4(32): [--Wwarn=unknown] warning: Unknown annotation: matchKind
     @matchKind("exact")
      ^^^^^^^^^
-./example3-integrated.p4(36): [--Wwarn=unknown] warning: Unknown annotation: controlled
+./example4b2-integrated.p4(36): [--Wwarn=unknown] warning: Unknown annotation: controlled
 @controlled extern flow_def_t3_0 query_t3_0(@matchKind("exact") in bit<16> t3_0_hdr_ethernet_etherType);
  ^^^^^^^^^^
 /usr/local/share/p4c/p4include/v1model.p4(31): [--Wwarn=unknown] warning: Unknown annotation: metadata
@@ -20,28 +23,25 @@ extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
 /usr/local/share/p4c/p4include/v1model.p4(460): [--Wwarn=unknown] warning: Unknown annotation: deparser
 @deparser
  ^^^^^^^^
-./example3-integrated.p4(321): [--Wwarn=unknown] warning: Unknown annotation: noreturn
+./example4b2-integrated.p4(265): [--Wwarn=unknown] warning: Unknown annotation: noreturn
 @impl("parse_and_run_") @noreturn extern void parse_and_run(mutable_packet pin, inout metadata metas_, inout standard_metadata_t standard_meta);
                          ^^^^^^^^
-frontend done in 1247ms
+frontend done in 1196ms
 done unrolling 0 38 in 0ms
-done graph buildup  1372 in 71ms, linking in 5ms
-done chaotic iterations 1372, iters: 1383 in 52 ms
-done constant propagation #nodes:1372 #vars:656 in 149ms
-done constant propagation and simplification #nodes:1372 vs 730 #foldings:177 in:192ms
-done unrolling 0 730 in 7ms
-intra-basic block simplifications 54ms
-done chaotic iterations 58, iters: 58 in 5 ms
-dom tree simplifications for 214,570/670
-dom tree simplifications for 214,0/100
-dom tree simplifications for 570/58 76ms
-simplified 3,582 if conditions
-boundaries computed: 4 in 0ms
-obtained specs: 8 in 18ms
+done graph buildup  1353 in 69ms, linking in 5ms
+done chaotic iterations 1353, iters: 1362 in 50 ms
+done constant propagation #nodes:1353 #vars:648 in 146ms
+done constant propagation and simplification #nodes:1353 vs 711 #foldings:179 in:189ms
+done unrolling 0 711 in 6ms
+intra-basic block simplifications 53ms
+done chaotic iterations 44, iters: 44 in 5 ms
+dom tree simplifications for 195,559/634
+dom tree simplifications for 195,0/75
+dom tree simplifications for 559/44 69ms
+simplified 3,570 if conditions
+boundaries computed: 3 in 0ms
+obtained specs: 4 in 12ms
 don't care reasoning done in 0 ms
-building parent decision tree 0ms
-partitioning hdrs__PSAImpl_ingress_start.ipv4_2.valid_:3 took 0ms
-refined decision tree hdrs__PSAImpl_ingress_start.ipv4_2.valid_:3 in 0ms
 building parent decision tree 0ms
 partitioning hdr_ParserImpl.ipv4.valid_:3 took 0ms
 refined decision tree hdr_ParserImpl.ipv4.valid_:3 in 0ms
@@ -50,20 +50,14 @@ refined decision tree hdr_ParserImpl.tcp.valid_:3 in 0ms
 building parent decision tree 0ms
 partitioning hdrs__PSAImpl_ingress_start.ipv4_3.valid_:3 took 0ms
 refined decision tree hdrs__PSAImpl_ingress_start.ipv4_3.valid_:3 in 0ms
-slicing bug 0 49/79 took 2ms
+slicing bug 0 33/56 took 1ms
 building parent decision tree 0ms
 partitioning hdrs__PSAImpl_ingress_start.ipv4_3.valid_:3 took 0ms
 refined decision tree hdrs__PSAImpl_ingress_start.ipv4_3.valid_:3 in 0ms
-building parent decision tree 0ms
-partitioning hdrs__PSAImpl_ingress_start.ipv4_2.valid_:3 took 0ms
-refined decision tree hdrs__PSAImpl_ingress_start.ipv4_2.valid_:3 in 0ms
-check result:sat #assertions:73 time:6ms
+check result:sat #assertions:50 time:5ms
 get model time:0ms
 sat in 1 iters, 0ms
-check result:sat #assertions:74 time:0ms
-get model time:0ms
-sat in 1 iters, 0ms
-check result:unsat #assertions:75 time:0ms
-without specs 2 bugs in 7ms
-check result:unsat #assertions:81 time:0ms
+check result:unsat #assertions:51 time:0ms
+without specs 1 bugs in 6ms
+check result:unsat #assertions:54 time:0ms
 with specs 0 bugs in 0ms
