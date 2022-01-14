@@ -98,7 +98,7 @@ struct headers {
 parser ParserImpl(packet_in packet, out headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
     @name(".start") state start {
         packet.extract<ethernet_t>(hdr.ethernet);
-        transition reject;
+        transition accept;
     }
 }
 
@@ -137,6 +137,7 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
     @name("ingress.allocator") table allocator_0 {
         key = {
             meta._meta_router_interface_value0: exact @name("meta.meta.router_interface_value") ;
+            meta._ghost_iface_set1            : exact @name("meta.ghost.iface_set") ;
         }
         actions = {
             allocated_1();
@@ -147,6 +148,7 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
     @name("ingress.getter") table getter_0 {
         key = {
             meta._meta_router_interface_value0: exact @name("meta.meta.router_interface_value") ;
+            meta._ghost_allocated2            : exact @name("meta.ghost.allocated") ;
         }
         actions = {
             fwd();

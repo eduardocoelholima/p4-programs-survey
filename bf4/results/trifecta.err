@@ -1,0 +1,55 @@
+Traceback (most recent call last):
+  File "/home/ecl7037/code/bf4/sigcomm-2020/cleanup_v1.py", line 94, in <module>
+    subprocess.check_call([args.bf4_exec, '--dump-instrumented', outinstr, cleanout],
+  File "/home/ecl7037/anaconda3/lib/python3.8/subprocess.py", line 364, in check_call
+    raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command '['p4c-analysis', '--dump-instrumented', './trifecta-instrumented.p4', './trifecta-clean.p4']' returned non-zero exit status 1.
+starting frontend
+./trifecta-integrated.p4(17): [--Wwarn=unknown] warning: Unknown annotation: readonly
+extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
+                                             ^^^^^^^^
+./trifecta-integrated.p4(33): [--Wwarn=unknown] warning: Unknown annotation: matchKind
+    @matchKind("exact")
+     ^^^^^^^^^
+./trifecta-integrated.p4(37): [--Wwarn=unknown] warning: Unknown annotation: controlled
+@controlled extern flow_def_t2_0 query_t2_0(@matchKind("exact") in bit<16> t2_0_hdr_h0_value);
+ ^^^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(31): [--Wwarn=unknown] warning: Unknown annotation: metadata
+@metadata @name("standard_metadata")
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(59): [--Wwarn=unknown] warning: Unknown annotation: alias
+    @alias("queueing_metadata.enq_timestamp")
+     ^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(442): [--Wwarn=unknown] warning: Unknown annotation: pipeline
+@pipeline
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(460): [--Wwarn=unknown] warning: Unknown annotation: deparser
+@deparser
+ ^^^^^^^^
+./trifecta-integrated.p4(267): [--Wwarn=unknown] warning: Unknown annotation: noreturn
+@impl("parse_and_run_") @noreturn extern void parse_and_run(mutable_packet pin, inout metadata metas_, inout standard_metadata_t standard_meta);
+                         ^^^^^^^^
+frontend done in 949ms
+done unrolling 0 9 in 0ms
+done graph buildup  873 in 33ms, linking in 2ms
+done chaotic iterations 873, iters: 885 in 16 ms
+done constant propagation #nodes:873 #vars:347 in 61ms
+done constant propagation and simplification #nodes:873 vs 286 #foldings:117 in:78ms
+done unrolling 0 286 in 2ms
+intra-basic block simplifications 15ms
+done chaotic iterations 38, iters: 38 in 1 ms
+dom tree simplifications for 31,200/267
+dom tree simplifications for 31,0/67
+dom tree simplifications for 200/38 30ms
+simplified 0,211 if conditions
+boundaries computed: 4 in 0ms
+obtained specs: 2 in 7ms
+don't care reasoning done in 0 ms
+slicing bug 0 20/40 took 1ms
+check result:sat #assertions:30 time:5ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:unsat #assertions:31 time:0ms
+without specs 1 bugs in 5ms
+check result:unsat #assertions:32 time:0ms
+with specs 0 bugs in 0ms

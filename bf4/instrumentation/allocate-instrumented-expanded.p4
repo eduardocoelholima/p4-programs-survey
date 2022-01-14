@@ -27,9 +27,11 @@ struct flow_def_getter_0 {
     bit<9>                           fwd__port;
     @matchKind("exact") 
     bit<16>                          key_getter_0_meta_meta_router_interface_value;
+    @matchKind("exact") 
+    bit<1>                           key_getter_0_meta_ghost_allocated;
 }
 
-@controlled() extern flow_def_getter_0 query_getter_0(@matchKind("exact") in bit<16> getter_0_meta_meta_router_interface_value);
+@controlled() extern flow_def_getter_0 query_getter_0(@matchKind("exact") in bit<16> getter_0_meta_meta_router_interface_value, @matchKind("exact") in bit<1> getter_0_meta_ghost_allocated);
 extern void end_getter_0();
 enum flow_def_allocator_0__action_type_t {
     allocated_1,
@@ -42,9 +44,11 @@ struct flow_def_allocator_0 {
     flow_def_allocator_0__action_type_t action_run;
     @matchKind("exact") 
     bit<16>                             key_allocator_0_meta_meta_router_interface_value;
+    @matchKind("exact") 
+    bit<1>                              key_allocator_0_meta_ghost_iface_set;
 }
 
-@controlled() extern flow_def_allocator_0 query_allocator_0(@matchKind("exact") in bit<16> allocator_0_meta_meta_router_interface_value);
+@controlled() extern flow_def_allocator_0 query_allocator_0(@matchKind("exact") in bit<16> allocator_0_meta_meta_router_interface_value, @matchKind("exact") in bit<1> allocator_0_meta_ghost_iface_set);
 extern void end_allocator_0();
 extern void key_match(in bool condition);
 extern void angelic_assert(in bool condition);
@@ -148,7 +152,7 @@ struct headers {
 parser ParserImpl(packet_in packet, out headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
     @name(".start") state start {
         packet.extract<ethernet_t>(hdr.ethernet);
-        transition reject;
+        transition accept;
     }
 }
 
@@ -192,9 +196,9 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
         }
         {
             flow_def_allocator_0 allocator;
-            allocator = query_allocator_0(meta._meta_router_interface_value0);
+            allocator = query_allocator_0(meta._meta_router_interface_value0, meta._ghost_iface_set1);
             if (allocator.hit) {
-                key_match(meta._meta_router_interface_value0 == allocator.key_allocator_0_meta_meta_router_interface_value);
+                key_match(meta._meta_router_interface_value0 == allocator.key_allocator_0_meta_meta_router_interface_value && meta._ghost_iface_set1 == allocator.key_allocator_0_meta_ghost_iface_set);
             }
             if (allocator.action_run == flow_def_allocator_0__action_type_t.unallocated) {
             }
@@ -213,9 +217,9 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
         }
         {
             flow_def_getter_0 getter;
-            getter = query_getter_0(meta._meta_router_interface_value0);
+            getter = query_getter_0(meta._meta_router_interface_value0, meta._ghost_allocated2);
             if (getter.hit) {
-                key_match(meta._meta_router_interface_value0 == getter.key_getter_0_meta_meta_router_interface_value);
+                key_match(meta._meta_router_interface_value0 == getter.key_getter_0_meta_meta_router_interface_value && meta._ghost_allocated2 == getter.key_getter_0_meta_ghost_allocated);
             }
             if (getter.action_run == flow_def_getter_0__action_type_t.drop_3) {
             }

@@ -1,0 +1,7 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/trifecta.p4 -> ./trifecta-clean.p4. Validating...
+(@controlled void query_t2_0<>(@matchKind in bit<16> t2_0_hdr_h0_value, out bool __ret___hit, out bool __ret___reach, out flow_def_t2_0__action_type_t __ret___action_run, out bit<16> __ret___validate_h2__value, out bit<16> __ret___key_t2_0_hdr_h0_value))
+WHEN query_t2_0(hdr_ParserImpl.h0.value:0, tmp_0_ingress.hit:1, tmp_0_ingress.reach:1, tmp_0_ingress.action_run:1, tmp_0_ingress.validate_h2__value:1, tmp_0_ingress.key_t2_0_hdr_h0_value:1);
+AND (!tmp_0_ingress.hit:1 && !(tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.NoAction_4) && !(tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.drop_4) && tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.validate_h2;)
+(@controlled void query_t2_0<>(@matchKind in bit<16> t2_0_hdr_h0_value, out bool __ret___hit, out bool __ret___reach, out flow_def_t2_0__action_type_t __ret___action_run, out bit<16> __ret___validate_h2__value, out bit<16> __ret___key_t2_0_hdr_h0_value))
+WHEN query_t2_0(hdr_ParserImpl.h0.value:0, tmp_0_ingress.hit:1, tmp_0_ingress.reach:1, tmp_0_ingress.action_run:1, tmp_0_ingress.validate_h2__value:1, tmp_0_ingress.key_t2_0_hdr_h0_value:1);
+AND (tmp_0_ingress.hit:1 && !(tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.NoAction_4) && !(tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.drop_4) && tmp_0_ingress.action_run:1 == flow_def_t2_0__action_type_t.validate_h2;)
