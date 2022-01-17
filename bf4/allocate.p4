@@ -119,7 +119,6 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
     table setter {
         key = {
             hdr.ethernet.dstAddr : exact;
-            // meta.ghost.allocated: exact;
         }
         actions = {
            set_iface;
@@ -129,7 +128,6 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
     table allocator {
         key = {
             meta.meta.router_interface_value : exact;
-            meta.ghost.iface_set: exact; //
         }
         actions = {
           allocated;
