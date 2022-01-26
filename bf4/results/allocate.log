@@ -1,7 +1,7 @@
 cleaned up /home/ecl7037/code/p4-programs-survey/bf4/allocate.p4 -> ./allocate-clean.p4. Validating...
-done instrumentation in 482ms
-done primitive expansion in 615ms
-done integration in 702ms
+done instrumentation in 468ms
+done primitive expansion in 605ms
+done integration in 720ms
 All set. To run bf4:
 p4c-analysis ./allocate-integrated.p4
 (@controlled void query_getter_0<>(@matchKind in bit<16> getter_0_meta_meta_router_interface_value, @matchKind in bit<1> getter_0_meta_ghost_allocated, out bool __ret___hit, out bool __ret___reach, out flow_def_getter_0__action_type_t __ret___action_run, out bit<9> __ret___fwd__port, out bit<16> __ret___key_getter_0_meta_meta_router_interface_value, out bit<1> __ret___key_getter_0_meta_ghost_allocated))

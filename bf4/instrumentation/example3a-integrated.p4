@@ -19,56 +19,92 @@ extern void prependPacket(mutable_packet self, @readonly mutable_packet other);
 extern void readPacket(mutable_packet self);
 extern void emptyPacket(mutable_packet self);
 extern void do_send<H>(in H port, mutable_packet pin);
-enum flow_def_setter_0__action_type_t {
-    set_iface,
-    drop_1,
+enum flow_def_t3_0__action_type_t {
+    use_H12,
+    NoAction_7
+}
+
+struct flow_def_t3_0 {
+    bool                         hit;
+    bool                         reach;
+    flow_def_t3_0__action_type_t action_run;
+    @matchKind("exact") 
+    bit<32>                      key_t3_0_header1;
+    @matchKind("exact") 
+    bit<8>                       key_t3_0_hdr_ipv4_ttl;
+}
+
+@controlled extern flow_def_t3_0 query_t3_0(@matchKind("exact") in bit<32> t3_0_header1, @matchKind("exact") in bit<8> t3_0_hdr_ipv4_ttl);
+extern void end_t3_0();
+enum flow_def_t2_0__action_type_t {
+    validate_H2,
+    _drop_2,
+    NoAction_1
+}
+
+struct flow_def_t2_0 {
+    bool                         hit;
+    bool                         reach;
+    flow_def_t2_0__action_type_t action_run;
+    @matchKind("exact") 
+    bit<32>                      key_t2_0_hdr_ipv4_dstAddr;
+}
+
+@controlled extern flow_def_t2_0 query_t2_0(@matchKind("exact") in bit<32> t2_0_hdr_ipv4_dstAddr);
+extern void end_t2_0();
+enum flow_def_t1_0__action_type_t {
+    validate_H1,
+    _drop,
     NoAction_0
 }
 
-struct flow_def_setter_0 {
-    bool                             hit;
-    bool                             reach;
-    flow_def_setter_0__action_type_t action_run;
-    bit<16>                          set_iface__router_interface_value;
+struct flow_def_t1_0 {
+    bool                         hit;
+    bool                         reach;
+    flow_def_t1_0__action_type_t action_run;
     @matchKind("exact") 
-    bit<48>                          key_setter_0_hdr_ethernet_dstAddr;
+    bit<32>                      key_t1_0_hdr_ipv4_srcAddr;
 }
 
-@controlled extern flow_def_setter_0 query_setter_0(@matchKind("exact") in bit<48> setter_0_hdr_ethernet_dstAddr);
-extern void end_setter_0();
-enum flow_def_allocator_0__action_type_t {
-    allocated_1,
-    unallocated
+@controlled extern flow_def_t1_0 query_t1_0(@matchKind("exact") in bit<32> t1_0_hdr_ipv4_srcAddr);
+extern void end_t1_0();
+enum flow_def_ipv4_lpm_0__action_type_t {
+    set_nhop,
+    _drop_6,
+    NoAction_9
 }
 
-struct flow_def_allocator_0 {
-    bool                                hit;
-    bool                                reach;
-    flow_def_allocator_0__action_type_t action_run;
+struct flow_def_ipv4_lpm_0 {
+    bool                               hit;
+    bool                               reach;
+    flow_def_ipv4_lpm_0__action_type_t action_run;
+    bit<32>                            set_nhop__nhop_ipv4;
+    bit<9>                             set_nhop__port;
+    @matchKind("lpm") 
+    bit<32>                            key_ipv4_lpm_0_hdr_ipv4_dstAddr__val;
+    @matchKind("lpm") 
+    bit<32>                            key_ipv4_lpm_0_hdr_ipv4_dstAddr__prefix;
+}
+
+@controlled extern flow_def_ipv4_lpm_0 query_ipv4_lpm_0(@matchKind("lpm") in bit<32> ipv4_lpm_0_hdr_ipv4_dstAddr);
+extern void end_ipv4_lpm_0();
+enum flow_def_forward_0__action_type_t {
+    set_dmac,
+    _drop_5,
+    NoAction_8
+}
+
+struct flow_def_forward_0 {
+    bool                              hit;
+    bool                              reach;
+    flow_def_forward_0__action_type_t action_run;
+    bit<48>                           set_dmac__dmac;
     @matchKind("exact") 
-    bit<16>                             key_allocator_0_meta_meta_router_interface_value;
+    bit<32>                           key_forward_0_meta_custom_metadata_nhop_ipv4;
 }
 
-@controlled extern flow_def_allocator_0 query_allocator_0(@matchKind("exact") in bit<16> allocator_0_meta_meta_router_interface_value);
-extern void end_allocator_0();
-enum flow_def_getter_0__action_type_t {
-    fwd,
-    drop_3
-}
-
-struct flow_def_getter_0 {
-    bool                             hit;
-    bool                             reach;
-    flow_def_getter_0__action_type_t action_run;
-    bit<9>                           fwd__port;
-    @matchKind("exact") 
-    bit<16>                          key_getter_0_meta_meta_router_interface_value;
-    @matchKind("exact") 
-    bit<1>                           key_getter_0_meta_ghost_allocated;
-}
-
-@controlled extern flow_def_getter_0 query_getter_0(@matchKind("exact") in bit<16> getter_0_meta_meta_router_interface_value, @matchKind("exact") in bit<1> getter_0_meta_ghost_allocated);
-extern void end_getter_0();
+@controlled extern flow_def_forward_0 query_forward_0(@matchKind("exact") in bit<32> forward_0_meta_custom_metadata_nhop_ipv4);
+extern void end_forward_0();
 extern void key_match(in bool condition);
 extern void angelic_assert(in bool condition);
 extern void bug();
@@ -77,25 +113,14 @@ extern void bug();
 
 #include <v1model.p4>
 
-struct ingress_metadata_t {
-    bit<16> router_interface_value;
-}
-
-struct ghost_t {
-    bit<1> iface_set;
-    bit<1> allocated;
-    bit<1> forwarded;
+struct custom_metadata_t {
+    bit<32> nhop_ipv4;
 }
 
 header ethernet_t {
     bit<48> dstAddr;
     bit<48> srcAddr;
     bit<16> etherType;
-}
-
-header icmp_t {
-    bit<16> typeCode;
-    bit<16> hdrChecksum;
 }
 
 header ipv4_t {
@@ -113,166 +138,250 @@ header ipv4_t {
     bit<32> dstAddr;
 }
 
-header ipv6_t {
-    bit<4>   version;
-    bit<8>   trafficClass;
-    bit<20>  flowLabel;
-    bit<16>  payloadLen;
-    bit<8>   nextHdr;
-    bit<8>   hopLimit;
-    bit<128> srcAddr;
-    bit<128> dstAddr;
-}
-
 header tcp_t {
     bit<16> srcPort;
     bit<16> dstPort;
     bit<32> seqNo;
     bit<32> ackNo;
     bit<4>  dataOffset;
-    bit<4>  res;
-    bit<8>  flags;
+    bit<3>  res;
+    bit<3>  ecn;
+    bit<6>  ctrl;
     bit<16> window;
     bit<16> checksum;
     bit<16> urgentPtr;
 }
 
-header udp_t {
-    bit<16> srcPort;
-    bit<16> dstPort;
-    bit<16> length_;
-    bit<16> checksum;
-}
-
-header vlan_tag_t {
-    bit<3>  pcp;
-    bit<1>  cfi;
-    bit<12> vid;
-    bit<16> etherType;
-}
-
 struct metadata {
-    bit<16> _meta_router_interface_value0;
-    bit<1>  _ghost_iface_set1;
-    bit<1>  _ghost_allocated2;
-    bit<1>  _ghost_forwarded3;
+    bit<32> _custom_metadata_nhop_ipv40;
 }
 
 struct headers {
     ethernet_t ethernet;
-    icmp_t     icmp;
     ipv4_t     ipv4;
-    ipv6_t     ipv6;
     tcp_t      tcp;
-    udp_t      udp;
-    vlan_tag_t vlan_tag;
 }
 
 parser ParserImpl(mutable_packet packet, out headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata, inout error err) {
-    @name(".start") state start {
-        packet.extract<ethernet_t>(hdr.ethernet);
+    state parse_ipv4 {
+        packet.extract<ipv4_t>(hdr.ipv4);
+        transition select(hdr.ipv4.protocol) {
+            8w6: parse_tcp;
+            default: accept;
+        }
+    }
+    state parse_tcp {
+        packet.extract<tcp_t>(hdr.tcp);
         transition accept;
+    }
+    state start {
+        packet.extract<ethernet_t>(hdr.ethernet);
+        transition select(hdr.ethernet.etherType) {
+            16w0x800: parse_ipv4;
+            default: accept;
+        }
     }
 }
 
-control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
-    bool __track_egress_spec_0;
-    flow_def_setter_0 setter;
-    flow_def_allocator_0 allocator;
-    flow_def_getter_0 getter;
-    flow_def_setter_0 tmp_2;
-    flow_def_allocator_0 tmp_3;
-    flow_def_getter_0 tmp_4;
+control egress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+    bit<32> key_0;
+    flow_def_t1_0 t1;
+    flow_def_t2_0 t2;
+    flow_def_t3_0 t3;
+    flow_def_t1_0 tmp_4;
+    flow_def_t2_0 tmp_5;
+    flow_def_t3_0 tmp_6;
     apply {
-        meta._ghost_iface_set1 = 1w0;
-        meta._ghost_allocated2 = 1w0;
-        meta._ghost_forwarded3 = 1w0;
-        tmp_2 = query_setter_0(hdr.ethernet.dstAddr);
-        setter = tmp_2;
-        if (setter.hit) {
-            key_match(hdr.ethernet.dstAddr == setter.key_setter_0_hdr_ethernet_dstAddr);
-            if (!hdr.ethernet.isValid()) {
+        hdr.ethernet.setInvalid();
+        tmp_4 = query_t1_0(hdr.ipv4.srcAddr);
+        t1 = tmp_4;
+        if (t1.hit) {
+            key_match(hdr.ipv4.srcAddr == t1.key_t1_0_hdr_ipv4_srcAddr);
+            if (!hdr.ipv4.isValid()) {
                 bug();
             }
         }
-        if (setter.action_run == flow_def_setter_0__action_type_t.NoAction_0) {
+        if (t1.action_run == flow_def_t1_0__action_type_t.NoAction_0) {
             ;
         }
         else {
-            if (setter.action_run == flow_def_setter_0__action_type_t.drop_1) {
+            if (t1.action_run == flow_def_t1_0__action_type_t._drop) {
                 angelic_assert(true);
+                standard_metadata.egress_spec = 9w511;
             }
             else {
-                if (setter.action_run == flow_def_setter_0__action_type_t.set_iface) {
+                if (t1.action_run == flow_def_t1_0__action_type_t.validate_H1) {
                     angelic_assert(true);
-                    meta._meta_router_interface_value0 = setter.set_iface__router_interface_value;
-                    meta._ghost_iface_set1 = 1w1;
+                    hdr.ipv4.setValid();
                 }
                 else {
                     ;
                 }
             }
         }
-        end_setter_0();
-        tmp_3 = query_allocator_0(meta._meta_router_interface_value0);
-        allocator = tmp_3;
-        if (allocator.hit) {
-            key_match(meta._meta_router_interface_value0 == allocator.key_allocator_0_meta_meta_router_interface_value);
+        end_t1_0();
+        tmp_5 = query_t2_0(hdr.ipv4.dstAddr);
+        t2 = tmp_5;
+        if (t2.hit) {
+            key_match(hdr.ipv4.dstAddr == t2.key_t2_0_hdr_ipv4_dstAddr);
+            if (!hdr.ipv4.isValid()) {
+                bug();
+            }
         }
-        if (allocator.action_run == flow_def_allocator_0__action_type_t.unallocated) {
+        if (t2.action_run == flow_def_t2_0__action_type_t.NoAction_1) {
             ;
         }
         else {
-            if (allocator.action_run == flow_def_allocator_0__action_type_t.allocated_1) {
+            if (t2.action_run == flow_def_t2_0__action_type_t._drop_2) {
                 angelic_assert(true);
-                meta._ghost_allocated2 = 1w1;
+                standard_metadata.egress_spec = 9w511;
+            }
+            else {
+                if (t2.action_run == flow_def_t2_0__action_type_t.validate_H2) {
+                    angelic_assert(true);
+                    hdr.ipv4.setValid();
+                }
+                else {
+                    ;
+                }
+            }
+        }
+        end_t2_0();
+        if (hdr.ipv4.isValid() && hdr.ipv4.isValid()) {
+            key_0 = hdr.ipv4.srcAddr + hdr.ipv4.dstAddr;
+        }
+        else {
+            bug();
+        }
+        tmp_6 = query_t3_0(key_0, hdr.ipv4.ttl);
+        t3 = tmp_6;
+        if (t3.hit) {
+            key_match(key_0 == t3.key_t3_0_header1 && hdr.ipv4.ttl == t3.key_t3_0_hdr_ipv4_ttl);
+            if (!hdr.ipv4.isValid()) {
+                bug();
+            }
+        }
+        if (t3.action_run == flow_def_t3_0__action_type_t.NoAction_7) {
+            ;
+        }
+        else {
+            if (t3.action_run == flow_def_t3_0__action_type_t.use_H12) {
+                angelic_assert(true);
+                if (hdr.ipv4.isValid() && hdr.ipv4.isValid()) {
+                    hdr.ipv4.srcAddr = hdr.ipv4.dstAddr;
+                }
+                else {
+                    bug();
+                }
             }
             else {
                 ;
             }
         }
-        end_allocator_0();
-        tmp_4 = query_getter_0(meta._meta_router_interface_value0, meta._ghost_allocated2);
-        getter = tmp_4;
-        if (getter.hit) {
-            key_match(meta._meta_router_interface_value0 == getter.key_getter_0_meta_meta_router_interface_value && meta._ghost_allocated2 == getter.key_getter_0_meta_ghost_allocated);
+        end_t3_0();
+    }
+}
+
+control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+    bool __track_egress_spec_0;
+    flow_def_ipv4_lpm_0 ipv4_lpm;
+    flow_def_forward_0 forward;
+    flow_def_ipv4_lpm_0 tmp_7;
+    flow_def_forward_0 tmp_8;
+    apply {
+        __track_egress_spec_0 = false;
+        tmp_7 = query_ipv4_lpm_0(hdr.ipv4.dstAddr);
+        ipv4_lpm = tmp_7;
+        if (ipv4_lpm.hit) {
+            key_match(hdr.ipv4.dstAddr & (32w1 << ipv4_lpm.key_ipv4_lpm_0_hdr_ipv4_dstAddr__prefix) + 32w4294967295 == ipv4_lpm.key_ipv4_lpm_0_hdr_ipv4_dstAddr__val & (32w1 << ipv4_lpm.key_ipv4_lpm_0_hdr_ipv4_dstAddr__prefix) + 32w4294967295);
+            if (!(hdr.ipv4.isValid() || (32w1 << ipv4_lpm.key_ipv4_lpm_0_hdr_ipv4_dstAddr__prefix) + 32w4294967295 == 32w0)) {
+                bug();
+            }
         }
-        if (getter.action_run == flow_def_getter_0__action_type_t.drop_3) {
+        if (ipv4_lpm.action_run == flow_def_ipv4_lpm_0__action_type_t.NoAction_9) {
             ;
         }
         else {
-            if (getter.action_run == flow_def_getter_0__action_type_t.fwd) {
+            if (ipv4_lpm.action_run == flow_def_ipv4_lpm_0__action_type_t._drop_6) {
                 angelic_assert(true);
-                meta._ghost_forwarded3 = 1w1;
+                standard_metadata.egress_spec = 9w511;
+                __track_egress_spec_0 = true;
             }
             else {
-                ;
+                if (ipv4_lpm.action_run == flow_def_ipv4_lpm_0__action_type_t.set_nhop) {
+                    angelic_assert(true);
+                    meta._custom_metadata_nhop_ipv40 = ipv4_lpm.set_nhop__nhop_ipv4;
+                    standard_metadata.egress_spec = ipv4_lpm.set_nhop__port;
+                    __track_egress_spec_0 = true;
+                    if (hdr.ipv4.isValid() && hdr.ipv4.isValid()) {
+                        hdr.ipv4.ttl = hdr.ipv4.ttl + 8w255;
+                    }
+                    else {
+                        bug();
+                    }
+                }
+                else {
+                    ;
+                }
             }
         }
-        end_getter_0();
-        if (!(meta._ghost_iface_set1 == 1w0 || meta._ghost_allocated2 == 1w1)) {
-            bug();
+        end_ipv4_lpm_0();
+        tmp_8 = query_forward_0(meta._custom_metadata_nhop_ipv40);
+        forward = tmp_8;
+        if (forward.hit) {
+            key_match(meta._custom_metadata_nhop_ipv40 == forward.key_forward_0_meta_custom_metadata_nhop_ipv4);
         }
-        if (!(meta._ghost_forwarded3 == 1w0 || meta._ghost_allocated2 == 1w1)) {
-            bug();
+        if (forward.action_run == flow_def_forward_0__action_type_t.NoAction_8) {
+            ;
         }
-        standard_metadata.egress_spec = 9w511;
-        __track_egress_spec_0 = true;
+        else {
+            if (forward.action_run == flow_def_forward_0__action_type_t._drop_5) {
+                angelic_assert(true);
+                standard_metadata.egress_spec = 9w511;
+                __track_egress_spec_0 = true;
+            }
+            else {
+                if (forward.action_run == flow_def_forward_0__action_type_t.set_dmac) {
+                    angelic_assert(true);
+                    if (hdr.ethernet.isValid()) {
+                        hdr.ethernet.dstAddr = forward.set_dmac__dmac;
+                    }
+                    else {
+                        bug();
+                    }
+                }
+                else {
+                    ;
+                }
+            }
+        }
+        end_forward_0();
         if (!__track_egress_spec_0) {
             bug();
         }
     }
 }
 
-control egress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
-    apply {
-    }
-}
-
 control DeparserImpl(mutable_packet packet, in headers hdr) {
     apply {
         packet.emit<ethernet_t>(hdr.ethernet);
+        packet.emit<ipv4_t>(hdr.ipv4);
+        packet.emit<tcp_t>(hdr.tcp);
     }
+}
+
+struct tuple_0 {
+    bit<4>  field;
+    bit<4>  field_0;
+    bit<8>  field_1;
+    bit<16> field_2;
+    bit<16> field_3;
+    bit<3>  field_4;
+    bit<13> field_5;
+    bit<8>  field_6;
+    bit<8>  field_7;
+    bit<32> field_8;
+    bit<32> field_9;
 }
 
 control verifyChecksum(inout headers hdr, inout metadata meta) {
@@ -364,10 +473,7 @@ void PSAImpl_egress_start_(mutable_packet p, inout headers hdrs_, inout metadata
     recirculate_flag_0 = standard_meta.recirculate_flag;
     if (recirculate_flag_0 != 32w0) {
         {
-            clone_metas_0._meta_router_interface_value0 = 16w0;
-            clone_metas_0._ghost_iface_set1 = 1w0;
-            clone_metas_0._ghost_allocated2 = 1w0;
-            clone_metas_0._ghost_forwarded3 = 1w0;
+            clone_metas_0._custom_metadata_nhop_ipv40 = 32w0;
         }
         copy_field_list(metas_, clone_metas_0, standard_meta, clone_sm_0, (bit<16>)recirculate_flag_0);
         clone_sm_0.resubmit_flag = (bit<32>)32w0;
@@ -449,12 +555,8 @@ void parse_and_run_(mutable_packet pin, inout metadata metas_, inout standard_me
     standard_meta.ingress_global_timestamp = now();
     {
         hdrs.ethernet.setInvalid();
-        hdrs.icmp.setInvalid();
         hdrs.ipv4.setInvalid();
-        hdrs.ipv6.setInvalid();
         hdrs.tcp.setInvalid();
-        hdrs.udp.setInvalid();
-        hdrs.vlan_tag.setInvalid();
     }
     ParserImpl() p;
     ;
@@ -516,10 +618,7 @@ void run() {
     standard_meta_0.ingress_port = p_0;
     standard_meta_0.ingress_global_timestamp = now();
     {
-        metas._meta_router_interface_value0 = 16w0;
-        metas._ghost_iface_set1 = 1w0;
-        metas._ghost_allocated2 = 1w0;
-        metas._ghost_forwarded3 = 1w0;
+        metas._custom_metadata_nhop_ipv40 = 32w0;
     }
     standard_meta_0.instance_type = PKT_INSTANCE_TYPE_NORMAL_0;
     parse_and_run(pin, metas, standard_meta_0);

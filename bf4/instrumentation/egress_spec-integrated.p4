@@ -19,56 +19,57 @@ extern void prependPacket(mutable_packet self, @readonly mutable_packet other);
 extern void readPacket(mutable_packet self);
 extern void emptyPacket(mutable_packet self);
 extern void do_send<H>(in H port, mutable_packet pin);
-enum flow_def_setter_0__action_type_t {
-    set_iface,
+enum flow_def_l3_valid_0__action_type_t {
+    drop_3,
+    NoAction_4
+}
+
+struct flow_def_l3_valid_0 {
+    bool                               hit;
+    bool                               reach;
+    flow_def_l3_valid_0__action_type_t action_run;
+    @matchKind("exact") 
+    bit<8>                             key_l3_valid_0_hdr_ipv4_ttl;
+}
+
+@controlled extern flow_def_l3_valid_0 query_l3_valid_0(@matchKind("exact") in bit<8> l3_valid_0_hdr_ipv4_ttl);
+extern void end_l3_valid_0();
+enum flow_def_l2_valid_0__action_type_t {
     drop_1,
     NoAction_0
 }
 
-struct flow_def_setter_0 {
-    bool                             hit;
-    bool                             reach;
-    flow_def_setter_0__action_type_t action_run;
-    bit<16>                          set_iface__router_interface_value;
+struct flow_def_l2_valid_0 {
+    bool                               hit;
+    bool                               reach;
+    flow_def_l2_valid_0__action_type_t action_run;
     @matchKind("exact") 
-    bit<48>                          key_setter_0_hdr_ethernet_dstAddr;
+    bit<48>                            key_l2_valid_0_hdr_ethernet_srcAddr;
 }
 
-@controlled extern flow_def_setter_0 query_setter_0(@matchKind("exact") in bit<48> setter_0_hdr_ethernet_dstAddr);
-extern void end_setter_0();
-enum flow_def_allocator_0__action_type_t {
-    allocated_1,
-    unallocated
+@controlled extern flow_def_l2_valid_0 query_l2_valid_0(@matchKind("exact") in bit<48> l2_valid_0_hdr_ethernet_srcAddr);
+extern void end_l2_valid_0();
+enum flow_def_punt_0__action_type_t {
+    ctrl,
+    NoAction_5
 }
 
-struct flow_def_allocator_0 {
-    bool                                hit;
-    bool                                reach;
-    flow_def_allocator_0__action_type_t action_run;
-    @matchKind("exact") 
-    bit<16>                             key_allocator_0_meta_meta_router_interface_value;
+struct flow_def_punt_0 {
+    bool                           hit;
+    bool                           reach;
+    flow_def_punt_0__action_type_t action_run;
+    @matchKind("ternary") 
+    bit<48>                        key_punt_0_hdr_ethernet_dstAddr__val;
+    @matchKind("ternary") 
+    bit<48>                        key_punt_0_hdr_ethernet_dstAddr__mask;
+    @matchKind("ternary") 
+    bit<32>                        key_punt_0_hdr_ipv4_dstAddr__val;
+    @matchKind("ternary") 
+    bit<32>                        key_punt_0_hdr_ipv4_dstAddr__mask;
 }
 
-@controlled extern flow_def_allocator_0 query_allocator_0(@matchKind("exact") in bit<16> allocator_0_meta_meta_router_interface_value);
-extern void end_allocator_0();
-enum flow_def_getter_0__action_type_t {
-    fwd,
-    drop_3
-}
-
-struct flow_def_getter_0 {
-    bool                             hit;
-    bool                             reach;
-    flow_def_getter_0__action_type_t action_run;
-    bit<9>                           fwd__port;
-    @matchKind("exact") 
-    bit<16>                          key_getter_0_meta_meta_router_interface_value;
-    @matchKind("exact") 
-    bit<1>                           key_getter_0_meta_ghost_allocated;
-}
-
-@controlled extern flow_def_getter_0 query_getter_0(@matchKind("exact") in bit<16> getter_0_meta_meta_router_interface_value, @matchKind("exact") in bit<1> getter_0_meta_ghost_allocated);
-extern void end_getter_0();
+@controlled extern flow_def_punt_0 query_punt_0(@matchKind("ternary") in bit<48> punt_0_hdr_ethernet_dstAddr, @matchKind("ternary") in bit<32> punt_0_hdr_ipv4_dstAddr);
+extern void end_punt_0();
 extern void key_match(in bool condition);
 extern void angelic_assert(in bool condition);
 extern void bug();
@@ -77,40 +78,27 @@ extern void bug();
 
 #include <v1model.p4>
 
-struct ingress_metadata_t {
-    bit<16> router_interface_value;
-}
-
-struct ghost_t {
-    bit<1> iface_set;
-    bit<1> allocated;
-    bit<1> forwarded;
-}
-
+typedef bit<48> macAddr_t;
+typedef bit<32> ip4Addr_t;
 header ethernet_t {
-    bit<48> dstAddr;
-    bit<48> srcAddr;
-    bit<16> etherType;
-}
-
-header icmp_t {
-    bit<16> typeCode;
-    bit<16> hdrChecksum;
+    macAddr_t dstAddr;
+    macAddr_t srcAddr;
+    bit<16>   etherType;
 }
 
 header ipv4_t {
-    bit<4>  version;
-    bit<4>  ihl;
-    bit<8>  diffserv;
-    bit<16> totalLen;
-    bit<16> identification;
-    bit<3>  flags;
-    bit<13> fragOffset;
-    bit<8>  ttl;
-    bit<8>  protocol;
-    bit<16> hdrChecksum;
-    bit<32> srcAddr;
-    bit<32> dstAddr;
+    bit<4>    version;
+    bit<4>    ihl;
+    bit<8>    diffserv;
+    bit<16>   totalLen;
+    bit<16>   identification;
+    bit<3>    flags;
+    bit<13>   fragOffset;
+    bit<8>    ttl;
+    bit<8>    protocol;
+    bit<16>   hdrChecksum;
+    ip4Addr_t srcAddr;
+    ip4Addr_t dstAddr;
 }
 
 header ipv6_t {
@@ -124,168 +112,150 @@ header ipv6_t {
     bit<128> dstAddr;
 }
 
-header tcp_t {
-    bit<16> srcPort;
-    bit<16> dstPort;
-    bit<32> seqNo;
-    bit<32> ackNo;
-    bit<4>  dataOffset;
-    bit<4>  res;
-    bit<8>  flags;
-    bit<16> window;
-    bit<16> checksum;
-    bit<16> urgentPtr;
-}
-
-header udp_t {
-    bit<16> srcPort;
-    bit<16> dstPort;
-    bit<16> length_;
-    bit<16> checksum;
-}
-
-header vlan_tag_t {
-    bit<3>  pcp;
-    bit<1>  cfi;
-    bit<12> vid;
-    bit<16> etherType;
-}
-
 struct metadata {
-    bit<16> _meta_router_interface_value0;
-    bit<1>  _ghost_iface_set1;
-    bit<1>  _ghost_allocated2;
-    bit<1>  _ghost_forwarded3;
+    bit<1> l3_admit;
 }
 
 struct headers {
     ethernet_t ethernet;
-    icmp_t     icmp;
     ipv4_t     ipv4;
     ipv6_t     ipv6;
-    tcp_t      tcp;
-    udp_t      udp;
-    vlan_tag_t vlan_tag;
 }
 
-parser ParserImpl(mutable_packet packet, out headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata, inout error err) {
-    @name(".start") state start {
-        packet.extract<ethernet_t>(hdr.ethernet);
+parser MyParser(mutable_packet packet, out headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata, inout error err) {
+    state parse_ipv4 {
+        packet.extract<ipv4_t>(hdr.ipv4);
         transition accept;
+    }
+    state start {
+        packet.extract<ethernet_t>(hdr.ethernet);
+        transition select(hdr.ethernet.etherType) {
+            16w0x800: parse_ipv4;
+            default: reject;
+        }
     }
 }
 
-control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
-    bool __track_egress_spec_0;
-    flow_def_setter_0 setter;
-    flow_def_allocator_0 allocator;
-    flow_def_getter_0 getter;
-    flow_def_setter_0 tmp_2;
-    flow_def_allocator_0 tmp_3;
-    flow_def_getter_0 tmp_4;
+control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
     apply {
-        meta._ghost_iface_set1 = 1w0;
-        meta._ghost_allocated2 = 1w0;
-        meta._ghost_forwarded3 = 1w0;
-        tmp_2 = query_setter_0(hdr.ethernet.dstAddr);
-        setter = tmp_2;
-        if (setter.hit) {
-            key_match(hdr.ethernet.dstAddr == setter.key_setter_0_hdr_ethernet_dstAddr);
+    }
+}
+
+control MyIngress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+    bool __track_egress_spec_0;
+    flow_def_l2_valid_0 l2_valid;
+    flow_def_l3_valid_0 l3_valid;
+    flow_def_punt_0 punt;
+    flow_def_l2_valid_0 tmp_2;
+    flow_def_l3_valid_0 tmp_3;
+    flow_def_punt_0 tmp_4;
+    apply {
+        __track_egress_spec_0 = false;
+        tmp_2 = query_l2_valid_0(hdr.ethernet.srcAddr);
+        l2_valid = tmp_2;
+        if (l2_valid.hit) {
+            key_match(hdr.ethernet.srcAddr == l2_valid.key_l2_valid_0_hdr_ethernet_srcAddr);
             if (!hdr.ethernet.isValid()) {
                 bug();
             }
         }
-        if (setter.action_run == flow_def_setter_0__action_type_t.NoAction_0) {
-            ;
+        if (l2_valid.action_run == flow_def_l2_valid_0__action_type_t.NoAction_0) {
+            angelic_assert(true);
         }
         else {
-            if (setter.action_run == flow_def_setter_0__action_type_t.drop_1) {
+            if (l2_valid.action_run == flow_def_l2_valid_0__action_type_t.drop_1) {
                 angelic_assert(true);
-            }
-            else {
-                if (setter.action_run == flow_def_setter_0__action_type_t.set_iface) {
-                    angelic_assert(true);
-                    meta._meta_router_interface_value0 = setter.set_iface__router_interface_value;
-                    meta._ghost_iface_set1 = 1w1;
-                }
-                else {
-                    ;
-                }
-            }
-        }
-        end_setter_0();
-        tmp_3 = query_allocator_0(meta._meta_router_interface_value0);
-        allocator = tmp_3;
-        if (allocator.hit) {
-            key_match(meta._meta_router_interface_value0 == allocator.key_allocator_0_meta_meta_router_interface_value);
-        }
-        if (allocator.action_run == flow_def_allocator_0__action_type_t.unallocated) {
-            ;
-        }
-        else {
-            if (allocator.action_run == flow_def_allocator_0__action_type_t.allocated_1) {
-                angelic_assert(true);
-                meta._ghost_allocated2 = 1w1;
+                standard_metadata.egress_spec = 9w511;
+                __track_egress_spec_0 = true;
             }
             else {
                 ;
             }
         }
-        end_allocator_0();
-        tmp_4 = query_getter_0(meta._meta_router_interface_value0, meta._ghost_allocated2);
-        getter = tmp_4;
-        if (getter.hit) {
-            key_match(meta._meta_router_interface_value0 == getter.key_getter_0_meta_meta_router_interface_value && meta._ghost_allocated2 == getter.key_getter_0_meta_ghost_allocated);
+        end_l2_valid_0();
+        tmp_3 = query_l3_valid_0(hdr.ipv4.ttl);
+        l3_valid = tmp_3;
+        if (l3_valid.hit) {
+            key_match(hdr.ipv4.ttl == l3_valid.key_l3_valid_0_hdr_ipv4_ttl);
+            if (!hdr.ipv4.isValid()) {
+                bug();
+            }
         }
-        if (getter.action_run == flow_def_getter_0__action_type_t.drop_3) {
-            ;
+        if (l3_valid.action_run == flow_def_l3_valid_0__action_type_t.NoAction_4) {
+            angelic_assert(true);
         }
         else {
-            if (getter.action_run == flow_def_getter_0__action_type_t.fwd) {
+            if (l3_valid.action_run == flow_def_l3_valid_0__action_type_t.drop_3) {
                 angelic_assert(true);
-                meta._ghost_forwarded3 = 1w1;
+                standard_metadata.egress_spec = 9w511;
+                __track_egress_spec_0 = true;
             }
             else {
                 ;
             }
         }
-        end_getter_0();
-        if (!(meta._ghost_iface_set1 == 1w0 || meta._ghost_allocated2 == 1w1)) {
-            bug();
+        end_l3_valid_0();
+        tmp_4 = query_punt_0(hdr.ethernet.dstAddr, hdr.ipv4.dstAddr);
+        punt = tmp_4;
+        if (punt.hit) {
+            key_match(hdr.ethernet.dstAddr & punt.key_punt_0_hdr_ethernet_dstAddr__mask == punt.key_punt_0_hdr_ethernet_dstAddr__val & punt.key_punt_0_hdr_ethernet_dstAddr__mask && hdr.ipv4.dstAddr & punt.key_punt_0_hdr_ipv4_dstAddr__mask == punt.key_punt_0_hdr_ipv4_dstAddr__val & punt.key_punt_0_hdr_ipv4_dstAddr__mask);
+            if (!(hdr.ethernet.isValid() || punt.key_punt_0_hdr_ethernet_dstAddr__mask == 48w0)) {
+                bug();
+            }
+            if (!(hdr.ipv4.isValid() || punt.key_punt_0_hdr_ipv4_dstAddr__mask == 32w0)) {
+                bug();
+            }
         }
-        if (!(meta._ghost_forwarded3 == 1w0 || meta._ghost_allocated2 == 1w1)) {
-            bug();
+        if (punt.action_run == flow_def_punt_0__action_type_t.NoAction_5) {
+            angelic_assert(true);
         }
-        standard_metadata.egress_spec = 9w511;
-        __track_egress_spec_0 = true;
+        else {
+            if (punt.action_run == flow_def_punt_0__action_type_t.ctrl) {
+                angelic_assert(true);
+                standard_metadata.egress_spec = 9w510;
+                __track_egress_spec_0 = true;
+            }
+            else {
+                ;
+            }
+        }
+        end_punt_0();
         if (!__track_egress_spec_0) {
             bug();
         }
     }
 }
 
-control egress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+control MyEgress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
     apply {
     }
 }
 
-control DeparserImpl(mutable_packet packet, in headers hdr) {
+struct tuple_0 {
+    bit<4>  field;
+    bit<4>  field_0;
+    bit<8>  field_1;
+    bit<16> field_2;
+    bit<16> field_3;
+    bit<3>  field_4;
+    bit<13> field_5;
+    bit<8>  field_6;
+    bit<8>  field_7;
+    bit<32> field_8;
+    bit<32> field_9;
+}
+
+control MyComputeChecksum(inout headers hdr, inout metadata meta) {
     apply {
-        packet.emit<ethernet_t>(hdr.ethernet);
     }
 }
 
-control verifyChecksum(inout headers hdr, inout metadata meta) {
+control MyDeparser(mutable_packet packet, in headers hdr) {
     apply {
     }
 }
 
-control computeChecksum(inout headers hdr, inout metadata meta) {
-    apply {
-    }
-}
-
-V1Switch<headers, metadata>(ParserImpl(), verifyChecksum(), ingress(), egress(), computeChecksum(), DeparserImpl()) main;
+V1Switch<headers, metadata>(MyParser(), MyVerifyChecksum(), MyIngress(), MyEgress(), MyComputeChecksum(), MyDeparser()) main;
 
 void copy_field_list(in metadata from, inout metadata to, in standard_metadata_t smfrom, inout standard_metadata_t smto, in bit<16> discriminator) {
 }
@@ -336,9 +306,9 @@ void PSAImpl_egress_start_(mutable_packet p, inout headers hdrs_, inout metadata
     CloneSessionId_t clone_field_list_0;
     clone_session_t cs_0;
     bit<32> recirculate_flag_0;
-    egress() eg;
+    MyEgress() eg;
     ;
-    DeparserImpl() dep;
+    MyDeparser() dep;
     ;
     clone_sm_0 = standard_meta;
     clone_hdrs_0 = hdrs_;
@@ -364,10 +334,7 @@ void PSAImpl_egress_start_(mutable_packet p, inout headers hdrs_, inout metadata
     recirculate_flag_0 = standard_meta.recirculate_flag;
     if (recirculate_flag_0 != 32w0) {
         {
-            clone_metas_0._meta_router_interface_value0 = 16w0;
-            clone_metas_0._ghost_iface_set1 = 1w0;
-            clone_metas_0._ghost_allocated2 = 1w0;
-            clone_metas_0._ghost_forwarded3 = 1w0;
+            clone_metas_0.l3_admit = 1w0;
         }
         copy_field_list(metas_, clone_metas_0, standard_meta, clone_sm_0, (bit<16>)recirculate_flag_0);
         clone_sm_0.resubmit_flag = (bit<32>)32w0;
@@ -391,7 +358,7 @@ void PSAImpl_ingress_start_(mutable_packet p, inout headers hdrs_, inout metadat
     bit<32> resubmit_flag_0;
     clone_session_t cs_1;
     clone_session_t ms_0;
-    ingress() ig;
+    MyIngress() ig;
     ;
     clone_sm_1 = standard_meta;
     clone_hdrs_1 = hdrs_;
@@ -449,14 +416,10 @@ void parse_and_run_(mutable_packet pin, inout metadata metas_, inout standard_me
     standard_meta.ingress_global_timestamp = now();
     {
         hdrs.ethernet.setInvalid();
-        hdrs.icmp.setInvalid();
         hdrs.ipv4.setInvalid();
         hdrs.ipv6.setInvalid();
-        hdrs.tcp.setInvalid();
-        hdrs.udp.setInvalid();
-        hdrs.vlan_tag.setInvalid();
     }
-    ParserImpl() p;
+    MyParser() p;
     ;
     last_0 = error.NoError;
     p.apply(pin, hdrs, metas_, standard_meta, last_0);
@@ -516,10 +479,7 @@ void run() {
     standard_meta_0.ingress_port = p_0;
     standard_meta_0.ingress_global_timestamp = now();
     {
-        metas._meta_router_interface_value0 = 16w0;
-        metas._ghost_iface_set1 = 1w0;
-        metas._ghost_allocated2 = 1w0;
-        metas._ghost_forwarded3 = 1w0;
+        metas.l3_admit = 1w0;
     }
     standard_meta_0.instance_type = PKT_INSTANCE_TYPE_NORMAL_0;
     parse_and_run(pin, metas, standard_meta_0);

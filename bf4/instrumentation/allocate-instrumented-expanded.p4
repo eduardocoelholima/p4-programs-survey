@@ -15,6 +15,21 @@ struct flow_def_setter_0 {
 
 @controlled() extern flow_def_setter_0 query_setter_0(@matchKind("exact") in bit<48> setter_0_hdr_ethernet_dstAddr);
 extern void end_setter_0();
+enum flow_def_allocator_0__action_type_t {
+    allocated_1,
+    unallocated
+}
+
+struct flow_def_allocator_0 {
+    bool                                hit;
+    bool                                reach;
+    flow_def_allocator_0__action_type_t action_run;
+    @matchKind("exact") 
+    bit<16>                             key_allocator_0_meta_meta_router_interface_value;
+}
+
+@controlled() extern flow_def_allocator_0 query_allocator_0(@matchKind("exact") in bit<16> allocator_0_meta_meta_router_interface_value);
+extern void end_allocator_0();
 enum flow_def_getter_0__action_type_t {
     fwd,
     drop_3
@@ -33,23 +48,6 @@ struct flow_def_getter_0 {
 
 @controlled() extern flow_def_getter_0 query_getter_0(@matchKind("exact") in bit<16> getter_0_meta_meta_router_interface_value, @matchKind("exact") in bit<1> getter_0_meta_ghost_allocated);
 extern void end_getter_0();
-enum flow_def_allocator_0__action_type_t {
-    allocated_1,
-    unallocated
-}
-
-struct flow_def_allocator_0 {
-    bool                                hit;
-    bool                                reach;
-    flow_def_allocator_0__action_type_t action_run;
-    @matchKind("exact") 
-    bit<16>                             key_allocator_0_meta_meta_router_interface_value;
-    @matchKind("exact") 
-    bit<1>                              key_allocator_0_meta_ghost_iface_set;
-}
-
-@controlled() extern flow_def_allocator_0 query_allocator_0(@matchKind("exact") in bit<16> allocator_0_meta_meta_router_interface_value, @matchKind("exact") in bit<1> allocator_0_meta_ghost_iface_set);
-extern void end_allocator_0();
 extern void key_match(in bool condition);
 extern void angelic_assert(in bool condition);
 extern void bug();
@@ -196,9 +194,9 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
         }
         {
             flow_def_allocator_0 allocator;
-            allocator = query_allocator_0(meta._meta_router_interface_value0, meta._ghost_iface_set1);
+            allocator = query_allocator_0(meta._meta_router_interface_value0);
             if (allocator.hit) {
-                key_match(meta._meta_router_interface_value0 == allocator.key_allocator_0_meta_meta_router_interface_value && meta._ghost_iface_set1 == allocator.key_allocator_0_meta_ghost_iface_set);
+                key_match(meta._meta_router_interface_value0 == allocator.key_allocator_0_meta_meta_router_interface_value);
             }
             if (allocator.action_run == flow_def_allocator_0__action_type_t.unallocated) {
             }

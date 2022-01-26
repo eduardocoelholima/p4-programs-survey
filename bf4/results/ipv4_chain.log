@@ -1,0 +1,6 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/ipv4_chain.p4 -> ./ipv4_chain-clean.p4. Validating...
+done instrumentation in 455ms
+done primitive expansion in 523ms
+done integration in 619ms
+All set. To run bf4:
+p4c-analysis ./ipv4_chain-integrated.p4

@@ -1,0 +1,6 @@
+cleaned up /home/ecl7037/code/p4-programs-survey/bf4/example3a.p4 -> ./example3a-clean.p4. Validating...
+done instrumentation in 646ms
+done primitive expansion in 745ms
+done integration in 816ms
+All set. To run bf4:
+p4c-analysis ./example3a-integrated.p4

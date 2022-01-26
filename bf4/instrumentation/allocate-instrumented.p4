@@ -144,7 +144,6 @@ control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_
     @name("ingress.allocator") @instrument_keys() table allocator {
         key = {
             meta._meta_router_interface_value0: exact @name("meta.meta.router_interface_value") ;
-            meta._ghost_iface_set1            : exact @name("meta.ghost.iface_set") ;
         }
         actions = {
             allocated_1();

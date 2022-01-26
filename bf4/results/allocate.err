@@ -20,46 +20,46 @@ extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
 /usr/local/share/p4c/p4include/v1model.p4(460): [--Wwarn=unknown] warning: Unknown annotation: deparser
 @deparser
  ^^^^^^^^
-./allocate-integrated.p4(312): [--Wwarn=unknown] warning: Unknown annotation: noreturn
+./allocate-integrated.p4(310): [--Wwarn=unknown] warning: Unknown annotation: noreturn
 @impl("parse_and_run_") @noreturn extern void parse_and_run(mutable_packet pin, inout metadata metas_, inout standard_metadata_t standard_meta);
                          ^^^^^^^^
-frontend done in 1147ms
+frontend done in 1151ms
 done unrolling 0 13 in 0ms
-done graph buildup  1324 in 42ms, linking in 4ms
-done chaotic iterations 1324, iters: 1333 in 32 ms
-done constant propagation #nodes:1324 #vars:650 in 105ms
-done constant propagation and simplification #nodes:1324 vs 416 #foldings:127 in:129ms
-done unrolling 0 416 in 3ms
-intra-basic block simplifications 37ms
+done graph buildup  1323 in 44ms, linking in 5ms
+done chaotic iterations 1323, iters: 1332 in 28 ms
+done constant propagation #nodes:1323 #vars:648 in 104ms
+done constant propagation and simplification #nodes:1323 vs 415 #foldings:127 in:128ms
+done unrolling 0 415 in 3ms
+intra-basic block simplifications 36ms
 done chaotic iterations 38, iters: 38 in 3 ms
-dom tree simplifications for 35,335/410
+dom tree simplifications for 35,334/409
 dom tree simplifications for 35,0/75
-dom tree simplifications for 335/38 38ms
-simplified 0,341 if conditions
+dom tree simplifications for 334/38 40ms
+simplified 0,340 if conditions
 boundaries computed: 4 in 0ms
-obtained specs: 6 in 13ms
+obtained specs: 6 in 18ms
 don't care reasoning done in 0 ms
 building parent decision tree 0ms
-partitioning metas__PSAImpl_ingress_start._ghost_forwarded3:4 took 0ms
-refined decision tree metas__PSAImpl_ingress_start._ghost_forwarded3:4 in 0ms
+partitioning metas__PSAImpl_ingress_start._ghost_allocated2:4 took 0ms
+refined decision tree metas__PSAImpl_ingress_start._ghost_allocated2:4 in 0ms
 building parent decision tree 0ms
 partitioning metas__PSAImpl_ingress_start._ghost_iface_set1:4 took 0ms
 refined decision tree metas__PSAImpl_ingress_start._ghost_iface_set1:4 in 0ms
 partitioning metas__PSAImpl_ingress_start._meta_router_interface_value0:3 took 0ms
 refined decision tree metas__PSAImpl_ingress_start._meta_router_interface_value0:3 in 0ms
 building parent decision tree 0ms
+partitioning metas__PSAImpl_ingress_start._ghost_forwarded3:4 took 0ms
+refined decision tree metas__PSAImpl_ingress_start._ghost_forwarded3:4 in 0ms
+slicing bug 0 45/68 took 2ms
+building parent decision tree 0ms
 partitioning metas__PSAImpl_ingress_start._ghost_allocated2:4 took 0ms
 refined decision tree metas__PSAImpl_ingress_start._ghost_allocated2:4 in 0ms
-slicing bug 0 45/68 took 1ms
 building parent decision tree 0ms
 partitioning metas__PSAImpl_ingress_start._ghost_iface_set1:4 took 0ms
 refined decision tree metas__PSAImpl_ingress_start._ghost_iface_set1:4 in 0ms
 building parent decision tree 0ms
 partitioning metas__PSAImpl_ingress_start._ghost_forwarded3:4 took 0ms
 refined decision tree metas__PSAImpl_ingress_start._ghost_forwarded3:4 in 0ms
-building parent decision tree 0ms
-partitioning metas__PSAImpl_ingress_start._ghost_allocated2:4 took 0ms
-refined decision tree metas__PSAImpl_ingress_start._ghost_allocated2:4 in 0ms
 check result:sat #assertions:63 time:6ms
 get model time:0ms
 sat in 1 iters, 0ms
@@ -67,10 +67,11 @@ check result:sat #assertions:64 time:0ms
 get model time:0ms
 sat in 1 iters, 0ms
 check result:unsat #assertions:65 time:0ms
-without specs 2 bugs in 7ms
+without specs 2 bugs in 8ms
 check result:sat #assertions:69 time:0ms
 get model time:0ms
 sat in 1 iters, 0ms
 slicing bug 2 34/42 took 0ms
+bug 2,missing fixes at table query_allocator_0: metas__PSAImpl_ingress_start._ghost_iface_set1:4
 check result:unsat #assertions:70 time:0ms
 with specs 1 bugs in 2ms

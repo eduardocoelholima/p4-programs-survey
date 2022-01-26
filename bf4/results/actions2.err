@@ -1,0 +1,60 @@
+/home/ecl7037/code/p4-programs-survey/bf4/actions2.p4(46): [--Wwarn=parser-transition] warning: .parse_ipv4: implicit transition to `reject'
+    @name(".parse_ipv4") state parse_ipv4 {
+                               ^^^^^^^^^^
+starting frontend
+./actions2-integrated.p4(17): [--Wwarn=unknown] warning: Unknown annotation: readonly
+extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
+                                             ^^^^^^^^
+./actions2-integrated.p4(32): [--Wwarn=unknown] warning: Unknown annotation: matchKind
+    @matchKind("exact")
+     ^^^^^^^^^
+./actions2-integrated.p4(36): [--Wwarn=unknown] warning: Unknown annotation: controlled
+@controlled extern flow_def_t2_0 query_t2_0(@matchKind("exact") in bit<16> t2_0_ethernet_etherType);
+ ^^^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(31): [--Wwarn=unknown] warning: Unknown annotation: metadata
+@metadata @name("standard_metadata")
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(59): [--Wwarn=unknown] warning: Unknown annotation: alias
+    @alias("queueing_metadata.enq_timestamp")
+     ^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(442): [--Wwarn=unknown] warning: Unknown annotation: pipeline
+@pipeline
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(460): [--Wwarn=unknown] warning: Unknown annotation: deparser
+@deparser
+ ^^^^^^^^
+./actions2-integrated.p4(233): [--Wwarn=unknown] warning: Unknown annotation: noreturn
+@impl("parse_and_run_") @noreturn extern void parse_and_run(mutable_packet pin, inout metadata metas_, inout standard_metadata_t standard_meta);
+                         ^^^^^^^^
+frontend done in 1070ms
+done unrolling 0 24 in 0ms
+done graph buildup  1109 in 52ms, linking in 3ms
+done chaotic iterations 1109, iters: 1118 in 31 ms
+done constant propagation #nodes:1109 #vars:487 in 103ms
+done constant propagation and simplification #nodes:1109 vs 545 #foldings:183 in:136ms
+done unrolling 0 545 in 5ms
+intra-basic block simplifications 33ms
+done chaotic iterations 39, iters: 39 in 3 ms
+dom tree simplifications for 117,416/483
+dom tree simplifications for 117,0/67
+dom tree simplifications for 416/39 48ms
+simplified 2,427 if conditions
+boundaries computed: 3 in 0ms
+obtained specs: 4 in 10ms
+don't care reasoning done in 0 ms
+building parent decision tree 0ms
+partitioning hdrs__PSAImpl_ingress_start.ipv4_2.valid_:3 took 0ms
+refined decision tree hdrs__PSAImpl_ingress_start.ipv4_2.valid_:3 in 0ms
+building parent decision tree 0ms
+partitioning hdr_ParserImpl.ipv4.valid_:3 took 0ms
+slicing bug 0 33/50 took 1ms
+building parent decision tree 0ms
+partitioning hdrs__PSAImpl_ingress_start.ipv4_2.valid_:3 took 0ms
+refined decision tree hdrs__PSAImpl_ingress_start.ipv4_2.valid_:3 in 0ms
+check result:sat #assertions:50 time:5ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:unsat #assertions:51 time:0ms
+without specs 1 bugs in 6ms
+check result:unsat #assertions:54 time:0ms
+with specs 0 bugs in 0ms
