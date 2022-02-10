@@ -105,10 +105,6 @@ control MyIngress(inout headers hdr,
     action packet_type(bit<1> is_l3) {
         meta.l3_admit = is_l3;
     }
-    
-    action ctrl() {
-        standard_metadata.egress_spec = 9w510; // or whatever the controller port number is
-    }
 
     table l2_valid {
         key = {
@@ -118,6 +114,10 @@ control MyIngress(inout headers hdr,
             drop;
             NoAction;
         }
+    }
+
+    action ctrl() {
+        standard_metadata.egress_spec = 9w510; // or whatever the controller port number is
     }
 
     table l3_valid {

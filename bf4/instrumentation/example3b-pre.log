@@ -27,57 +27,22 @@ extern void prependPacket(@mutable_packet() in packet_model self, @mutable_packe
 extern void readPacket(@mutable_packet() in packet_model self, @mutable_packet() out packet_model self_out);
 extern void emptyPacket(@mutable_packet() in packet_model self, @mutable_packet() out packet_model self_out);
 extern void do_send<H>(in H port, @mutable_packet() in packet_model pin, @mutable_packet() out packet_model pin_out);
-enum flow_def_l3_valid_0__action_type_t {
-    drop_3,
-    NoAction_4
-}
-
-struct flow_def_l3_valid_0 {
-    bool                               hit;
-    bool                               reach;
-    flow_def_l3_valid_0__action_type_t action_run;
-    @matchKind("exact") 
-    bit<8>                             key_l3_valid_0_hdr_ipv4_ttl;
-}
-
-@controlled extern void query_l3_valid_0(@matchKind("exact") in bit<8> l3_valid_0_hdr_ipv4_ttl, out bool __ret___hit, out bool __ret___reach, out flow_def_l3_valid_0__action_type_t __ret___action_run, out bit<8> __ret___key_l3_valid_0_hdr_ipv4_ttl);
-extern void end_l3_valid_0();
-enum flow_def_punt_0__action_type_t {
-    ctrl,
-    NoAction_5
-}
-
-struct flow_def_punt_0 {
-    bool                           hit;
-    bool                           reach;
-    flow_def_punt_0__action_type_t action_run;
-    @matchKind("ternary") 
-    bit<48>                        key_punt_0_hdr_ethernet_dstAddr__val;
-    @matchKind("ternary") 
-    bit<48>                        key_punt_0_hdr_ethernet_dstAddr__mask;
-    @matchKind("ternary") 
-    bit<32>                        key_punt_0_hdr_ipv4_dstAddr__val;
-    @matchKind("ternary") 
-    bit<32>                        key_punt_0_hdr_ipv4_dstAddr__mask;
-}
-
-@controlled extern void query_punt_0(@matchKind("ternary") in bit<48> punt_0_hdr_ethernet_dstAddr, @matchKind("ternary") in bit<32> punt_0_hdr_ipv4_dstAddr, out bool __ret___hit, out bool __ret___reach, out flow_def_punt_0__action_type_t __ret___action_run, out bit<48> __ret___key_punt_0_hdr_ethernet_dstAddr__val, out bit<48> __ret___key_punt_0_hdr_ethernet_dstAddr__mask, out bit<32> __ret___key_punt_0_hdr_ipv4_dstAddr__val, out bit<32> __ret___key_punt_0_hdr_ipv4_dstAddr__mask);
-extern void end_punt_0();
-enum flow_def_l2_valid_0__action_type_t {
-    drop_1,
+enum flow_def_t1_0__action_type_t {
+    decrement_ttl,
+    _drop,
     NoAction_0
 }
 
-struct flow_def_l2_valid_0 {
-    bool                               hit;
-    bool                               reach;
-    flow_def_l2_valid_0__action_type_t action_run;
+struct flow_def_t1_0 {
+    bool                         hit;
+    bool                         reach;
+    flow_def_t1_0__action_type_t action_run;
     @matchKind("exact") 
-    bit<48>                            key_l2_valid_0_hdr_ethernet_srcAddr;
+    bit<16>                      key_t1_0_hdr_ethernet_etherType;
 }
 
-@controlled extern void query_l2_valid_0(@matchKind("exact") in bit<48> l2_valid_0_hdr_ethernet_srcAddr, out bool __ret___hit, out bool __ret___reach, out flow_def_l2_valid_0__action_type_t __ret___action_run, out bit<48> __ret___key_l2_valid_0_hdr_ethernet_srcAddr);
-extern void end_l2_valid_0();
+@controlled extern void query_t1_0(@matchKind("exact") in bit<16> t1_0_hdr_ethernet_etherType, out bool __ret___hit, out bool __ret___reach, out flow_def_t1_0__action_type_t __ret___action_run, out bit<16> __ret___key_t1_0_hdr_ethernet_etherType);
+extern void end_t1_0();
 extern void key_match(in bool condition);
 extern void angelic_assert(in bool condition);
 extern void bug();
@@ -86,225 +51,251 @@ extern void bug();
 
 #include <v1model.p4>
 
-typedef bit<48> macAddr_t;
-typedef bit<32> ip4Addr_t;
+struct custom_metadata_t {
+    bit<32> nhop_ipv4;
+}
+
 @hdr("ethernet_t") struct ethernet_t {
-    macAddr_t dstAddr;
-    macAddr_t srcAddr;
-    bit<16>   etherType;
-    bool      valid_;
+    bit<48> dstAddr;
+    bit<48> srcAddr;
+    bit<16> etherType;
+    bool    valid_;
 }
 
 @hdr("ipv4_t") struct ipv4_t {
-    bit<4>    version;
-    bit<4>    ihl;
-    bit<8>    diffserv;
-    bit<16>   totalLen;
-    bit<16>   identification;
-    bit<3>    flags;
-    bit<13>   fragOffset;
-    bit<8>    ttl;
-    bit<8>    protocol;
-    bit<16>   hdrChecksum;
-    ip4Addr_t srcAddr;
-    ip4Addr_t dstAddr;
-    bool      valid_;
+    bit<4>  version;
+    bit<4>  ihl;
+    bit<8>  diffserv;
+    bit<16> totalLen;
+    bit<16> identification;
+    bit<3>  flags;
+    bit<13> fragOffset;
+    bit<8>  ttl;
+    bit<8>  protocol;
+    bit<16> hdrChecksum;
+    bit<32> srcAddr;
+    bit<32> dstAddr;
+    bool    valid_;
 }
 
-@hdr("ipv6_t") struct ipv6_t {
-    bit<4>   version;
-    bit<8>   trafficClass;
-    bit<20>  flowLabel;
-    bit<16>  payloadLen;
-    bit<8>   nextHdr;
-    bit<8>   hopLimit;
-    bit<128> srcAddr;
-    bit<128> dstAddr;
-    bool     valid_;
+@hdr("tcp_t") struct tcp_t {
+    bit<16> srcPort;
+    bit<16> dstPort;
+    bit<32> seqNo;
+    bit<32> ackNo;
+    bit<4>  dataOffset;
+    bit<3>  res;
+    bit<3>  ecn;
+    bit<6>  ctrl;
+    bit<16> window;
+    bit<16> checksum;
+    bit<16> urgentPtr;
+    bool    valid_;
 }
 
 struct metadata {
-    bit<1> l3_admit;
+    bit<32> _custom_metadata_nhop_ipv40;
 }
 
 struct headers {
     ethernet_t ethernet;
     ipv4_t     ipv4;
-    ipv6_t     ipv6;
+    tcp_t      tcp;
+    ipv4_t     ipv4_2;
 }
 
-parser MyParser(@mutable_packet() inout packet_model packet_MyParser, out headers hdr_MyParser, inout metadata meta_MyParser, inout standard_metadata_t standard_metadata_MyParser, inout error err_MyParser) {
+parser ParserImpl(@mutable_packet() inout packet_model packet_ParserImpl, out headers hdr_ParserImpl, inout metadata meta_ParserImpl, inout standard_metadata_t standard_metadata_ParserImpl, inout error err_ParserImpl) {
     state parse_ipv4 {
-        hdr_MyParser.ipv4.valid_ = true;
+        hdr_ParserImpl.ipv4.valid_ = true;
         {
-            modelPop<bit<4>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.version);
+            modelPop<bit<4>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.version);
         }
         {
-            modelPop<bit<4>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.ihl);
+            modelPop<bit<4>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.ihl);
         }
         {
-            modelPop<bit<8>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.diffserv);
+            modelPop<bit<8>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.diffserv);
         }
         {
-            modelPop<bit<16>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.totalLen);
+            modelPop<bit<16>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.totalLen);
         }
         {
-            modelPop<bit<16>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.identification);
+            modelPop<bit<16>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.identification);
         }
         {
-            modelPop<bit<3>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.flags);
+            modelPop<bit<3>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.flags);
         }
         {
-            modelPop<bit<13>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.fragOffset);
+            modelPop<bit<13>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.fragOffset);
         }
         {
-            modelPop<bit<8>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.ttl);
+            modelPop<bit<8>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.ttl);
         }
         {
-            modelPop<bit<8>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.protocol);
+            modelPop<bit<8>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.protocol);
         }
         {
-            modelPop<bit<16>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.hdrChecksum);
+            modelPop<bit<16>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.hdrChecksum);
         }
         {
-            modelPop<bit<32>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.srcAddr);
+            modelPop<bit<32>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.srcAddr);
         }
         {
-            modelPop<bit<32>>(packet_MyParser, packet_MyParser, hdr_MyParser.ipv4.dstAddr);
+            modelPop<bit<32>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ipv4.dstAddr);
+        }
+        transition select(hdr_ParserImpl.ipv4.protocol) {
+            8w6: parse_tcp;
+            default: accept;
+        }
+    }
+    state parse_tcp {
+        hdr_ParserImpl.tcp.valid_ = true;
+        {
+            modelPop<bit<16>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.tcp.srcPort);
+        }
+        {
+            modelPop<bit<16>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.tcp.dstPort);
+        }
+        {
+            modelPop<bit<32>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.tcp.seqNo);
+        }
+        {
+            modelPop<bit<32>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.tcp.ackNo);
+        }
+        {
+            modelPop<bit<4>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.tcp.dataOffset);
+        }
+        {
+            modelPop<bit<3>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.tcp.res);
+        }
+        {
+            modelPop<bit<3>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.tcp.ecn);
+        }
+        {
+            modelPop<bit<6>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.tcp.ctrl);
+        }
+        {
+            modelPop<bit<16>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.tcp.window);
+        }
+        {
+            modelPop<bit<16>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.tcp.checksum);
+        }
+        {
+            modelPop<bit<16>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.tcp.urgentPtr);
         }
         transition accept;
     }
     state start {
-        hdr_MyParser.ethernet.valid_ = false;
-        hdr_MyParser.ipv4.valid_ = false;
-        hdr_MyParser.ipv6.valid_ = false;
-        hdr_MyParser.ethernet.valid_ = true;
+        hdr_ParserImpl.ethernet.valid_ = false;
+        hdr_ParserImpl.ipv4.valid_ = false;
+        hdr_ParserImpl.tcp.valid_ = false;
+        hdr_ParserImpl.ipv4_2.valid_ = false;
+        hdr_ParserImpl.ethernet.valid_ = true;
         {
-            modelPop<bit<48>>(packet_MyParser, packet_MyParser, hdr_MyParser.ethernet.dstAddr);
+            modelPop<bit<48>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ethernet.dstAddr);
         }
         {
-            modelPop<bit<48>>(packet_MyParser, packet_MyParser, hdr_MyParser.ethernet.srcAddr);
+            modelPop<bit<48>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ethernet.srcAddr);
         }
         {
-            modelPop<bit<16>>(packet_MyParser, packet_MyParser, hdr_MyParser.ethernet.etherType);
+            modelPop<bit<16>>(packet_ParserImpl, packet_ParserImpl, hdr_ParserImpl.ethernet.etherType);
         }
-        transition select(hdr_MyParser.ethernet.etherType) {
+        transition select(hdr_ParserImpl.ethernet.etherType) {
             16w0x800: parse_ipv4;
-            default: reject;
+            default: accept;
         }
     }
 }
 
-control MyVerifyChecksum(inout headers hdr_MyVerifyChecksum, inout metadata meta_MyVerifyChecksum) {
+control egress(inout headers hdr_egress, inout metadata meta_egress, inout standard_metadata_t standard_metadata_egress) {
     apply {
     }
 }
 
-control MyIngress(inout headers hdr_MyIngress, inout metadata meta_MyIngress, inout standard_metadata_t standard_metadata_MyIngress) {
-    bool __track_egress_spec_MyIngress;
-    flow_def_l2_valid_0 l2_valid_0_MyIngress;
-    flow_def_l3_valid_0 l3_valid_0_MyIngress;
-    flow_def_punt_0 punt_0_MyIngress;
-    flow_def_l2_valid_0 tmp_MyIngress;
-    flow_def_l3_valid_0 tmp_0_MyIngress;
-    flow_def_punt_0 tmp_1_MyIngress;
+control ingress(inout headers hdr_ingress, inout metadata meta_ingress, inout standard_metadata_t standard_metadata_ingress) {
+    bool __track_egress_spec_ingress;
+    flow_def_t1_0 t1_0_ingress;
+    flow_def_t1_0 tmp_ingress;
     apply {
-        __track_egress_spec_MyIngress = false;
-        query_l2_valid_0(hdr_MyIngress.ethernet.srcAddr, tmp_MyIngress.hit, tmp_MyIngress.reach, tmp_MyIngress.action_run, tmp_MyIngress.key_l2_valid_0_hdr_ethernet_srcAddr);
+        __track_egress_spec_ingress = false;
+        query_t1_0(hdr_ingress.ethernet.etherType, tmp_ingress.hit, tmp_ingress.reach, tmp_ingress.action_run, tmp_ingress.key_t1_0_hdr_ethernet_etherType);
         {
-            l2_valid_0_MyIngress.hit = tmp_MyIngress.hit;
-            l2_valid_0_MyIngress.reach = tmp_MyIngress.reach;
-            l2_valid_0_MyIngress.action_run = tmp_MyIngress.action_run;
-            l2_valid_0_MyIngress.key_l2_valid_0_hdr_ethernet_srcAddr = tmp_MyIngress.key_l2_valid_0_hdr_ethernet_srcAddr;
+            t1_0_ingress.hit = tmp_ingress.hit;
+            t1_0_ingress.reach = tmp_ingress.reach;
+            t1_0_ingress.action_run = tmp_ingress.action_run;
+            t1_0_ingress.key_t1_0_hdr_ethernet_etherType = tmp_ingress.key_t1_0_hdr_ethernet_etherType;
         }
-        if (l2_valid_0_MyIngress.hit) {
-            key_match(hdr_MyIngress.ethernet.srcAddr == l2_valid_0_MyIngress.key_l2_valid_0_hdr_ethernet_srcAddr);
-            if (!hdr_MyIngress.ethernet.valid_) {
+        if (t1_0_ingress.hit) {
+            key_match(hdr_ingress.ethernet.etherType == t1_0_ingress.key_t1_0_hdr_ethernet_etherType);
+            if (!hdr_ingress.ethernet.valid_) {
                 bug();
             }
         }
-        if (l2_valid_0_MyIngress.action_run == flow_def_l2_valid_0__action_type_t.NoAction_0) {
-            angelic_assert(true);
+        if (t1_0_ingress.action_run == flow_def_t1_0__action_type_t.NoAction_0) {
+            ;
         }
         else {
-            if (l2_valid_0_MyIngress.action_run == flow_def_l2_valid_0__action_type_t.drop_1) {
+            if (t1_0_ingress.action_run == flow_def_t1_0__action_type_t._drop) {
                 angelic_assert(true);
-                standard_metadata_MyIngress.egress_spec = 9w511;
-                __track_egress_spec_MyIngress = true;
+                standard_metadata_ingress.egress_spec = 9w511;
+                __track_egress_spec_ingress = true;
             }
             else {
-                ;
+                if (t1_0_ingress.action_run == flow_def_t1_0__action_type_t.decrement_ttl) {
+                    angelic_assert(true);
+                    if (hdr_ingress.ipv4.valid_ && hdr_ingress.ipv4.valid_) {
+                        hdr_ingress.ipv4.ttl = hdr_ingress.ipv4.ttl + 8w255;
+                    }
+                    else {
+                        bug();
+                    }
+                }
+                else {
+                    ;
+                }
             }
         }
-        end_l2_valid_0();
-        query_l3_valid_0(hdr_MyIngress.ipv4.ttl, tmp_0_MyIngress.hit, tmp_0_MyIngress.reach, tmp_0_MyIngress.action_run, tmp_0_MyIngress.key_l3_valid_0_hdr_ipv4_ttl);
-        {
-            l3_valid_0_MyIngress.hit = tmp_0_MyIngress.hit;
-            l3_valid_0_MyIngress.reach = tmp_0_MyIngress.reach;
-            l3_valid_0_MyIngress.action_run = tmp_0_MyIngress.action_run;
-            l3_valid_0_MyIngress.key_l3_valid_0_hdr_ipv4_ttl = tmp_0_MyIngress.key_l3_valid_0_hdr_ipv4_ttl;
-        }
-        if (l3_valid_0_MyIngress.hit) {
-            key_match(hdr_MyIngress.ipv4.ttl == l3_valid_0_MyIngress.key_l3_valid_0_hdr_ipv4_ttl);
-            if (!hdr_MyIngress.ipv4.valid_) {
-                bug();
-            }
-        }
-        if (l3_valid_0_MyIngress.action_run == flow_def_l3_valid_0__action_type_t.NoAction_4) {
-            angelic_assert(true);
-        }
-        else {
-            if (l3_valid_0_MyIngress.action_run == flow_def_l3_valid_0__action_type_t.drop_3) {
-                angelic_assert(true);
-                standard_metadata_MyIngress.egress_spec = 9w511;
-                __track_egress_spec_MyIngress = true;
-            }
-            else {
-                ;
-            }
-        }
-        end_l3_valid_0();
-        query_punt_0(hdr_MyIngress.ethernet.dstAddr, hdr_MyIngress.ipv4.dstAddr, tmp_1_MyIngress.hit, tmp_1_MyIngress.reach, tmp_1_MyIngress.action_run, tmp_1_MyIngress.key_punt_0_hdr_ethernet_dstAddr__val, tmp_1_MyIngress.key_punt_0_hdr_ethernet_dstAddr__mask, tmp_1_MyIngress.key_punt_0_hdr_ipv4_dstAddr__val, tmp_1_MyIngress.key_punt_0_hdr_ipv4_dstAddr__mask);
-        {
-            punt_0_MyIngress.hit = tmp_1_MyIngress.hit;
-            punt_0_MyIngress.reach = tmp_1_MyIngress.reach;
-            punt_0_MyIngress.action_run = tmp_1_MyIngress.action_run;
-            punt_0_MyIngress.key_punt_0_hdr_ethernet_dstAddr__val = tmp_1_MyIngress.key_punt_0_hdr_ethernet_dstAddr__val;
-            punt_0_MyIngress.key_punt_0_hdr_ethernet_dstAddr__mask = tmp_1_MyIngress.key_punt_0_hdr_ethernet_dstAddr__mask;
-            punt_0_MyIngress.key_punt_0_hdr_ipv4_dstAddr__val = tmp_1_MyIngress.key_punt_0_hdr_ipv4_dstAddr__val;
-            punt_0_MyIngress.key_punt_0_hdr_ipv4_dstAddr__mask = tmp_1_MyIngress.key_punt_0_hdr_ipv4_dstAddr__mask;
-        }
-        if (punt_0_MyIngress.hit) {
-            key_match(hdr_MyIngress.ethernet.dstAddr & punt_0_MyIngress.key_punt_0_hdr_ethernet_dstAddr__mask == punt_0_MyIngress.key_punt_0_hdr_ethernet_dstAddr__val & punt_0_MyIngress.key_punt_0_hdr_ethernet_dstAddr__mask && hdr_MyIngress.ipv4.dstAddr & punt_0_MyIngress.key_punt_0_hdr_ipv4_dstAddr__mask == punt_0_MyIngress.key_punt_0_hdr_ipv4_dstAddr__val & punt_0_MyIngress.key_punt_0_hdr_ipv4_dstAddr__mask);
-            if (!(hdr_MyIngress.ethernet.valid_ || punt_0_MyIngress.key_punt_0_hdr_ethernet_dstAddr__mask == 48w0)) {
-                bug();
-            }
-            if (!(hdr_MyIngress.ipv4.valid_ || punt_0_MyIngress.key_punt_0_hdr_ipv4_dstAddr__mask == 32w0)) {
-                bug();
-            }
-        }
-        if (punt_0_MyIngress.action_run == flow_def_punt_0__action_type_t.NoAction_5) {
-            angelic_assert(true);
-        }
-        else {
-            if (punt_0_MyIngress.action_run == flow_def_punt_0__action_type_t.ctrl) {
-                angelic_assert(true);
-                standard_metadata_MyIngress.egress_spec = 9w510;
-                __track_egress_spec_MyIngress = true;
-            }
-            else {
-                ;
-            }
-        }
-        end_punt_0();
-        if (!__track_egress_spec_MyIngress) {
+        end_t1_0();
+        if (!__track_egress_spec_ingress) {
             bug();
         }
     }
 }
 
-control MyEgress(inout headers hdr_MyEgress, inout metadata meta_MyEgress, inout standard_metadata_t standard_metadata_MyEgress) {
+control DeparserImpl(@mutable_packet() inout packet_model packet_DeparserImpl, in headers hdr_DeparserImpl) {
     apply {
+        if (hdr_DeparserImpl.ethernet.valid_) {
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ethernet.dstAddr);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ethernet.srcAddr);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ethernet.etherType);
+        }
+        if (hdr_DeparserImpl.ipv4.valid_) {
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.version);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.ihl);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.diffserv);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.totalLen);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.identification);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.flags);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.fragOffset);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.ttl);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.protocol);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.hdrChecksum);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.srcAddr);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.ipv4.dstAddr);
+        }
+        if (hdr_DeparserImpl.tcp.valid_) {
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.tcp.srcPort);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.tcp.dstPort);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.tcp.seqNo);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.tcp.ackNo);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.tcp.dataOffset);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.tcp.res);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.tcp.ecn);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.tcp.ctrl);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.tcp.window);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.tcp.checksum);
+            modelEmit(packet_DeparserImpl, packet_DeparserImpl, hdr_DeparserImpl.tcp.urgentPtr);
+        }
     }
 }
 
@@ -322,17 +313,17 @@ struct tuple_0 {
     bit<32> field_9;
 }
 
-control MyComputeChecksum(inout headers hdr_MyComputeChecksum, inout metadata meta_MyComputeChecksum) {
+control verifyChecksum(inout headers hdr_verifyChecksum, inout metadata meta_verifyChecksum) {
     apply {
     }
 }
 
-control MyDeparser(@mutable_packet() inout packet_model packet_MyDeparser, in headers hdr_MyDeparser) {
+control computeChecksum(inout headers hdr_computeChecksum, inout metadata meta_computeChecksum) {
     apply {
     }
 }
 
-V1Switch<headers, metadata>(MyParser(), MyVerifyChecksum(), MyIngress(), MyEgress(), MyComputeChecksum(), MyDeparser()) main;
+V1Switch<headers, metadata>(ParserImpl(), verifyChecksum(), ingress(), egress(), computeChecksum(), DeparserImpl()) main;
 
 void copy_field_list(in metadata from_copy_field_list, inout metadata to_copy_field_list, in standard_metadata_t smfrom_copy_field_list, inout standard_metadata_t smto_copy_field_list, in bit<16> discriminator_copy_field_list) {
 }
@@ -384,9 +375,9 @@ void PSAImpl_egress_start_(@mutable_packet() inout packet_model p_PSAImpl_egress
     clone_session_t cs_2_PSAImpl_egress_start;
     bit<32> recirculate_flag_1_PSAImpl_egress_start;
     bool tmp;
-    MyEgress() eg;
+    egress() eg;
     ;
-    MyDeparser() dep;
+    DeparserImpl() dep;
     ;
     {
         clone_sm_PSAImpl_egress_start.ingress_port = standard_meta_PSAImpl_egress_start.ingress_port;
@@ -438,18 +429,34 @@ void PSAImpl_egress_start_(@mutable_packet() inout packet_model p_PSAImpl_egress
         clone_hdrs_PSAImpl_egress_start.ipv4.srcAddr = hdrs__PSAImpl_egress_start.ipv4.srcAddr;
         clone_hdrs_PSAImpl_egress_start.ipv4.dstAddr = hdrs__PSAImpl_egress_start.ipv4.dstAddr;
         clone_hdrs_PSAImpl_egress_start.ipv4.valid_ = hdrs__PSAImpl_egress_start.ipv4.valid_;
-        clone_hdrs_PSAImpl_egress_start.ipv6.version = hdrs__PSAImpl_egress_start.ipv6.version;
-        clone_hdrs_PSAImpl_egress_start.ipv6.trafficClass = hdrs__PSAImpl_egress_start.ipv6.trafficClass;
-        clone_hdrs_PSAImpl_egress_start.ipv6.flowLabel = hdrs__PSAImpl_egress_start.ipv6.flowLabel;
-        clone_hdrs_PSAImpl_egress_start.ipv6.payloadLen = hdrs__PSAImpl_egress_start.ipv6.payloadLen;
-        clone_hdrs_PSAImpl_egress_start.ipv6.nextHdr = hdrs__PSAImpl_egress_start.ipv6.nextHdr;
-        clone_hdrs_PSAImpl_egress_start.ipv6.hopLimit = hdrs__PSAImpl_egress_start.ipv6.hopLimit;
-        clone_hdrs_PSAImpl_egress_start.ipv6.srcAddr = hdrs__PSAImpl_egress_start.ipv6.srcAddr;
-        clone_hdrs_PSAImpl_egress_start.ipv6.dstAddr = hdrs__PSAImpl_egress_start.ipv6.dstAddr;
-        clone_hdrs_PSAImpl_egress_start.ipv6.valid_ = hdrs__PSAImpl_egress_start.ipv6.valid_;
+        clone_hdrs_PSAImpl_egress_start.tcp.srcPort = hdrs__PSAImpl_egress_start.tcp.srcPort;
+        clone_hdrs_PSAImpl_egress_start.tcp.dstPort = hdrs__PSAImpl_egress_start.tcp.dstPort;
+        clone_hdrs_PSAImpl_egress_start.tcp.seqNo = hdrs__PSAImpl_egress_start.tcp.seqNo;
+        clone_hdrs_PSAImpl_egress_start.tcp.ackNo = hdrs__PSAImpl_egress_start.tcp.ackNo;
+        clone_hdrs_PSAImpl_egress_start.tcp.dataOffset = hdrs__PSAImpl_egress_start.tcp.dataOffset;
+        clone_hdrs_PSAImpl_egress_start.tcp.res = hdrs__PSAImpl_egress_start.tcp.res;
+        clone_hdrs_PSAImpl_egress_start.tcp.ecn = hdrs__PSAImpl_egress_start.tcp.ecn;
+        clone_hdrs_PSAImpl_egress_start.tcp.ctrl = hdrs__PSAImpl_egress_start.tcp.ctrl;
+        clone_hdrs_PSAImpl_egress_start.tcp.window = hdrs__PSAImpl_egress_start.tcp.window;
+        clone_hdrs_PSAImpl_egress_start.tcp.checksum = hdrs__PSAImpl_egress_start.tcp.checksum;
+        clone_hdrs_PSAImpl_egress_start.tcp.urgentPtr = hdrs__PSAImpl_egress_start.tcp.urgentPtr;
+        clone_hdrs_PSAImpl_egress_start.tcp.valid_ = hdrs__PSAImpl_egress_start.tcp.valid_;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.version = hdrs__PSAImpl_egress_start.ipv4_2.version;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.ihl = hdrs__PSAImpl_egress_start.ipv4_2.ihl;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.diffserv = hdrs__PSAImpl_egress_start.ipv4_2.diffserv;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.totalLen = hdrs__PSAImpl_egress_start.ipv4_2.totalLen;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.identification = hdrs__PSAImpl_egress_start.ipv4_2.identification;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.flags = hdrs__PSAImpl_egress_start.ipv4_2.flags;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.fragOffset = hdrs__PSAImpl_egress_start.ipv4_2.fragOffset;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.ttl = hdrs__PSAImpl_egress_start.ipv4_2.ttl;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.protocol = hdrs__PSAImpl_egress_start.ipv4_2.protocol;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.hdrChecksum = hdrs__PSAImpl_egress_start.ipv4_2.hdrChecksum;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.srcAddr = hdrs__PSAImpl_egress_start.ipv4_2.srcAddr;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.dstAddr = hdrs__PSAImpl_egress_start.ipv4_2.dstAddr;
+        clone_hdrs_PSAImpl_egress_start.ipv4_2.valid_ = hdrs__PSAImpl_egress_start.ipv4_2.valid_;
     }
     {
-        clone_metas_PSAImpl_egress_start.l3_admit = metas__PSAImpl_egress_start.l3_admit;
+        clone_metas_PSAImpl_egress_start._custom_metadata_nhop_ipv40 = metas__PSAImpl_egress_start._custom_metadata_nhop_ipv40;
     }
     eg.apply(hdrs__PSAImpl_egress_start, metas__PSAImpl_egress_start, standard_meta_PSAImpl_egress_start);
     clone_session_PSAImpl_egress_start = standard_meta_PSAImpl_egress_start.clone_spec[15:0];
@@ -473,7 +480,7 @@ void PSAImpl_egress_start_(@mutable_packet() inout packet_model p_PSAImpl_egress
     recirculate_flag_1_PSAImpl_egress_start = standard_meta_PSAImpl_egress_start.recirculate_flag;
     if (recirculate_flag_1_PSAImpl_egress_start != 32w0) {
         {
-            clone_metas_PSAImpl_egress_start.l3_admit = 1w0;
+            clone_metas_PSAImpl_egress_start._custom_metadata_nhop_ipv40 = 32w0;
         }
         copy_field_list(metas__PSAImpl_egress_start, clone_metas_PSAImpl_egress_start, standard_meta_PSAImpl_egress_start, clone_sm_PSAImpl_egress_start, (bit<16>)recirculate_flag_1_PSAImpl_egress_start);
         clone_sm_PSAImpl_egress_start.resubmit_flag = (bit<32>)32w0;
@@ -498,7 +505,7 @@ void PSAImpl_ingress_start_(@mutable_packet() inout packet_model p_PSAImpl_ingre
     clone_session_t cs_3_PSAImpl_ingress_start;
     clone_session_t ms_PSAImpl_ingress_start;
     bool tmp_0;
-    MyIngress() ig;
+    ingress() ig;
     ;
     {
         clone_sm_2_PSAImpl_ingress_start.ingress_port = standard_meta_PSAImpl_ingress_start.ingress_port;
@@ -550,18 +557,34 @@ void PSAImpl_ingress_start_(@mutable_packet() inout packet_model p_PSAImpl_ingre
         clone_hdrs_2_PSAImpl_ingress_start.ipv4.srcAddr = hdrs__PSAImpl_ingress_start.ipv4.srcAddr;
         clone_hdrs_2_PSAImpl_ingress_start.ipv4.dstAddr = hdrs__PSAImpl_ingress_start.ipv4.dstAddr;
         clone_hdrs_2_PSAImpl_ingress_start.ipv4.valid_ = hdrs__PSAImpl_ingress_start.ipv4.valid_;
-        clone_hdrs_2_PSAImpl_ingress_start.ipv6.version = hdrs__PSAImpl_ingress_start.ipv6.version;
-        clone_hdrs_2_PSAImpl_ingress_start.ipv6.trafficClass = hdrs__PSAImpl_ingress_start.ipv6.trafficClass;
-        clone_hdrs_2_PSAImpl_ingress_start.ipv6.flowLabel = hdrs__PSAImpl_ingress_start.ipv6.flowLabel;
-        clone_hdrs_2_PSAImpl_ingress_start.ipv6.payloadLen = hdrs__PSAImpl_ingress_start.ipv6.payloadLen;
-        clone_hdrs_2_PSAImpl_ingress_start.ipv6.nextHdr = hdrs__PSAImpl_ingress_start.ipv6.nextHdr;
-        clone_hdrs_2_PSAImpl_ingress_start.ipv6.hopLimit = hdrs__PSAImpl_ingress_start.ipv6.hopLimit;
-        clone_hdrs_2_PSAImpl_ingress_start.ipv6.srcAddr = hdrs__PSAImpl_ingress_start.ipv6.srcAddr;
-        clone_hdrs_2_PSAImpl_ingress_start.ipv6.dstAddr = hdrs__PSAImpl_ingress_start.ipv6.dstAddr;
-        clone_hdrs_2_PSAImpl_ingress_start.ipv6.valid_ = hdrs__PSAImpl_ingress_start.ipv6.valid_;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.srcPort = hdrs__PSAImpl_ingress_start.tcp.srcPort;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.dstPort = hdrs__PSAImpl_ingress_start.tcp.dstPort;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.seqNo = hdrs__PSAImpl_ingress_start.tcp.seqNo;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.ackNo = hdrs__PSAImpl_ingress_start.tcp.ackNo;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.dataOffset = hdrs__PSAImpl_ingress_start.tcp.dataOffset;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.res = hdrs__PSAImpl_ingress_start.tcp.res;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.ecn = hdrs__PSAImpl_ingress_start.tcp.ecn;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.ctrl = hdrs__PSAImpl_ingress_start.tcp.ctrl;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.window = hdrs__PSAImpl_ingress_start.tcp.window;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.checksum = hdrs__PSAImpl_ingress_start.tcp.checksum;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.urgentPtr = hdrs__PSAImpl_ingress_start.tcp.urgentPtr;
+        clone_hdrs_2_PSAImpl_ingress_start.tcp.valid_ = hdrs__PSAImpl_ingress_start.tcp.valid_;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.version = hdrs__PSAImpl_ingress_start.ipv4_2.version;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.ihl = hdrs__PSAImpl_ingress_start.ipv4_2.ihl;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.diffserv = hdrs__PSAImpl_ingress_start.ipv4_2.diffserv;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.totalLen = hdrs__PSAImpl_ingress_start.ipv4_2.totalLen;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.identification = hdrs__PSAImpl_ingress_start.ipv4_2.identification;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.flags = hdrs__PSAImpl_ingress_start.ipv4_2.flags;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.fragOffset = hdrs__PSAImpl_ingress_start.ipv4_2.fragOffset;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.ttl = hdrs__PSAImpl_ingress_start.ipv4_2.ttl;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.protocol = hdrs__PSAImpl_ingress_start.ipv4_2.protocol;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.hdrChecksum = hdrs__PSAImpl_ingress_start.ipv4_2.hdrChecksum;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.srcAddr = hdrs__PSAImpl_ingress_start.ipv4_2.srcAddr;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.dstAddr = hdrs__PSAImpl_ingress_start.ipv4_2.dstAddr;
+        clone_hdrs_2_PSAImpl_ingress_start.ipv4_2.valid_ = hdrs__PSAImpl_ingress_start.ipv4_2.valid_;
     }
     {
-        clone_metas_2_PSAImpl_ingress_start.l3_admit = metas__PSAImpl_ingress_start.l3_admit;
+        clone_metas_2_PSAImpl_ingress_start._custom_metadata_nhop_ipv40 = metas__PSAImpl_ingress_start._custom_metadata_nhop_ipv40;
     }
     ig.apply(hdrs__PSAImpl_ingress_start, metas__PSAImpl_ingress_start, standard_meta_PSAImpl_ingress_start);
     clone_session_2_PSAImpl_ingress_start = standard_meta_PSAImpl_ingress_start.clone_spec[15:0];
@@ -649,9 +672,10 @@ void parse_and_run_(@mutable_packet() inout packet_model pin_parse_and_run, inou
     {
         hdrs_0_parse_and_run.ethernet.valid_ = false;
         hdrs_0_parse_and_run.ipv4.valid_ = false;
-        hdrs_0_parse_and_run.ipv6.valid_ = false;
+        hdrs_0_parse_and_run.tcp.valid_ = false;
+        hdrs_0_parse_and_run.ipv4_2.valid_ = false;
     }
-    MyParser() p;
+    ParserImpl() p;
     ;
     last_parse_and_run = error.NoError;
     p.apply(pin_parse_and_run, hdrs_0_parse_and_run, metas__parse_and_run, standard_meta_parse_and_run, last_parse_and_run);
@@ -717,7 +741,7 @@ void run() {
     standard_meta_1_run.ingress_port = p_1_run;
     now(standard_meta_1_run.ingress_global_timestamp);
     {
-        metas_0_run.l3_admit = 1w0;
+        metas_0_run._custom_metadata_nhop_ipv40 = 32w0;
     }
     standard_meta_1_run.instance_type = 32w0;
     parse_and_run(pin, metas_0_run, standard_meta_1_run);

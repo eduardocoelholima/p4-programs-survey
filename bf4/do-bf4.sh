@@ -24,3 +24,4 @@ cd /home/ecl7037/code/bf4/build/
 python3 /home/ecl7037/code/bf4/sigcomm-2020/cleanup_v1.py /home/ecl7037/code/p4-programs-survey/bf4/$basename.p4 >> /home/ecl7037/code/p4-programs-survey/bf4/results/$basename.log 2>>/home/ecl7037/code/p4-programs-survey/bf4/results/$basename.err
 p4c-analysis ./$basename-integrated.p4 >> /home/ecl7037/code/p4-programs-survey/bf4/results/$basename.log 2>>/home/ecl7037/code/p4-programs-survey/bf4/results/$basename.err
 cp /home/ecl7037/code/bf4/build/$basename* /home/ecl7037/code/p4-programs-survey/bf4/instrumentation/
+cp /home/ecl7037/code/bf4/build/log.p4 /home/ecl7037/code/p4-programs-survey/bf4/instrumentation/$basename-pre.log

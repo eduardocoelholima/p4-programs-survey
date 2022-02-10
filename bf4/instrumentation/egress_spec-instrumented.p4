@@ -95,6 +95,12 @@ control MyIngress(inout headers hdr, inout metadata meta, inout standard_metadat
             __track_egress_spec = true;
         }
     }
+    @name("MyIngress.ctrl") action ctrl() {
+        {
+            standard_metadata.egress_spec = 9w510;
+            __track_egress_spec = true;
+        }
+    }
     @name("MyIngress.l2_valid") @instrument_keys() table l2_valid {
         key = {
             hdr.ethernet.srcAddr: exact @name("hdr.ethernet.srcAddr") ;
@@ -104,12 +110,6 @@ control MyIngress(inout headers hdr, inout metadata meta, inout standard_metadat
             NoAction_0();
         }
         default_action = NoAction_0();
-    }
-    @name("MyIngress.ctrl") action ctrl() {
-        {
-            standard_metadata.egress_spec = 9w510;
-            __track_egress_spec = true;
-        }
     }
     @name("MyIngress.l3_valid") @instrument_keys() table l3_valid {
         key = {

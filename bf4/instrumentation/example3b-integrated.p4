@@ -19,57 +19,22 @@ extern void prependPacket(mutable_packet self, @readonly mutable_packet other);
 extern void readPacket(mutable_packet self);
 extern void emptyPacket(mutable_packet self);
 extern void do_send<H>(in H port, mutable_packet pin);
-enum flow_def_l3_valid_0__action_type_t {
-    drop_3,
-    NoAction_4
-}
-
-struct flow_def_l3_valid_0 {
-    bool                               hit;
-    bool                               reach;
-    flow_def_l3_valid_0__action_type_t action_run;
-    @matchKind("exact") 
-    bit<8>                             key_l3_valid_0_hdr_ipv4_ttl;
-}
-
-@controlled extern flow_def_l3_valid_0 query_l3_valid_0(@matchKind("exact") in bit<8> l3_valid_0_hdr_ipv4_ttl);
-extern void end_l3_valid_0();
-enum flow_def_punt_0__action_type_t {
-    ctrl,
-    NoAction_5
-}
-
-struct flow_def_punt_0 {
-    bool                           hit;
-    bool                           reach;
-    flow_def_punt_0__action_type_t action_run;
-    @matchKind("ternary") 
-    bit<48>                        key_punt_0_hdr_ethernet_dstAddr__val;
-    @matchKind("ternary") 
-    bit<48>                        key_punt_0_hdr_ethernet_dstAddr__mask;
-    @matchKind("ternary") 
-    bit<32>                        key_punt_0_hdr_ipv4_dstAddr__val;
-    @matchKind("ternary") 
-    bit<32>                        key_punt_0_hdr_ipv4_dstAddr__mask;
-}
-
-@controlled extern flow_def_punt_0 query_punt_0(@matchKind("ternary") in bit<48> punt_0_hdr_ethernet_dstAddr, @matchKind("ternary") in bit<32> punt_0_hdr_ipv4_dstAddr);
-extern void end_punt_0();
-enum flow_def_l2_valid_0__action_type_t {
-    drop_1,
+enum flow_def_t1_0__action_type_t {
+    decrement_ttl,
+    _drop,
     NoAction_0
 }
 
-struct flow_def_l2_valid_0 {
-    bool                               hit;
-    bool                               reach;
-    flow_def_l2_valid_0__action_type_t action_run;
+struct flow_def_t1_0 {
+    bool                         hit;
+    bool                         reach;
+    flow_def_t1_0__action_type_t action_run;
     @matchKind("exact") 
-    bit<48>                            key_l2_valid_0_hdr_ethernet_srcAddr;
+    bit<16>                      key_t1_0_hdr_ethernet_etherType;
 }
 
-@controlled extern flow_def_l2_valid_0 query_l2_valid_0(@matchKind("exact") in bit<48> l2_valid_0_hdr_ethernet_srcAddr);
-extern void end_l2_valid_0();
+@controlled extern flow_def_t1_0 query_t1_0(@matchKind("exact") in bit<16> t1_0_hdr_ethernet_etherType);
+extern void end_t1_0();
 extern void key_match(in bool condition);
 extern void angelic_assert(in bool condition);
 extern void bug();
@@ -78,156 +43,132 @@ extern void bug();
 
 #include <v1model.p4>
 
-typedef bit<48> macAddr_t;
-typedef bit<32> ip4Addr_t;
+struct custom_metadata_t {
+    bit<32> nhop_ipv4;
+}
+
 header ethernet_t {
-    macAddr_t dstAddr;
-    macAddr_t srcAddr;
-    bit<16>   etherType;
+    bit<48> dstAddr;
+    bit<48> srcAddr;
+    bit<16> etherType;
 }
 
 header ipv4_t {
-    bit<4>    version;
-    bit<4>    ihl;
-    bit<8>    diffserv;
-    bit<16>   totalLen;
-    bit<16>   identification;
-    bit<3>    flags;
-    bit<13>   fragOffset;
-    bit<8>    ttl;
-    bit<8>    protocol;
-    bit<16>   hdrChecksum;
-    ip4Addr_t srcAddr;
-    ip4Addr_t dstAddr;
+    bit<4>  version;
+    bit<4>  ihl;
+    bit<8>  diffserv;
+    bit<16> totalLen;
+    bit<16> identification;
+    bit<3>  flags;
+    bit<13> fragOffset;
+    bit<8>  ttl;
+    bit<8>  protocol;
+    bit<16> hdrChecksum;
+    bit<32> srcAddr;
+    bit<32> dstAddr;
 }
 
-header ipv6_t {
-    bit<4>   version;
-    bit<8>   trafficClass;
-    bit<20>  flowLabel;
-    bit<16>  payloadLen;
-    bit<8>   nextHdr;
-    bit<8>   hopLimit;
-    bit<128> srcAddr;
-    bit<128> dstAddr;
+header tcp_t {
+    bit<16> srcPort;
+    bit<16> dstPort;
+    bit<32> seqNo;
+    bit<32> ackNo;
+    bit<4>  dataOffset;
+    bit<3>  res;
+    bit<3>  ecn;
+    bit<6>  ctrl;
+    bit<16> window;
+    bit<16> checksum;
+    bit<16> urgentPtr;
 }
 
 struct metadata {
-    bit<1> l3_admit;
+    bit<32> _custom_metadata_nhop_ipv40;
 }
 
 struct headers {
     ethernet_t ethernet;
     ipv4_t     ipv4;
-    ipv6_t     ipv6;
+    tcp_t      tcp;
+    ipv4_t     ipv4_2;
 }
 
-parser MyParser(mutable_packet packet, out headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata, inout error err) {
+parser ParserImpl(mutable_packet packet, out headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata, inout error err) {
     state parse_ipv4 {
         packet.extract<ipv4_t>(hdr.ipv4);
+        transition select(hdr.ipv4.protocol) {
+            8w6: parse_tcp;
+            default: accept;
+        }
+    }
+    state parse_tcp {
+        packet.extract<tcp_t>(hdr.tcp);
         transition accept;
     }
     state start {
         packet.extract<ethernet_t>(hdr.ethernet);
         transition select(hdr.ethernet.etherType) {
             16w0x800: parse_ipv4;
-            default: reject;
+            default: accept;
         }
     }
 }
 
-control MyVerifyChecksum(inout headers hdr, inout metadata meta) {
+control egress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
     apply {
     }
 }
 
-control MyIngress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+control ingress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
     bool __track_egress_spec_0;
-    flow_def_l2_valid_0 l2_valid;
-    flow_def_l3_valid_0 l3_valid;
-    flow_def_punt_0 punt;
-    flow_def_l2_valid_0 tmp_2;
-    flow_def_l3_valid_0 tmp_3;
-    flow_def_punt_0 tmp_4;
+    flow_def_t1_0 t1;
+    flow_def_t1_0 tmp_0;
     apply {
         __track_egress_spec_0 = false;
-        tmp_2 = query_l2_valid_0(hdr.ethernet.srcAddr);
-        l2_valid = tmp_2;
-        if (l2_valid.hit) {
-            key_match(hdr.ethernet.srcAddr == l2_valid.key_l2_valid_0_hdr_ethernet_srcAddr);
+        tmp_0 = query_t1_0(hdr.ethernet.etherType);
+        t1 = tmp_0;
+        if (t1.hit) {
+            key_match(hdr.ethernet.etherType == t1.key_t1_0_hdr_ethernet_etherType);
             if (!hdr.ethernet.isValid()) {
                 bug();
             }
         }
-        if (l2_valid.action_run == flow_def_l2_valid_0__action_type_t.NoAction_0) {
-            angelic_assert(true);
+        if (t1.action_run == flow_def_t1_0__action_type_t.NoAction_0) {
+            ;
         }
         else {
-            if (l2_valid.action_run == flow_def_l2_valid_0__action_type_t.drop_1) {
+            if (t1.action_run == flow_def_t1_0__action_type_t._drop) {
                 angelic_assert(true);
                 standard_metadata.egress_spec = 9w511;
                 __track_egress_spec_0 = true;
             }
             else {
-                ;
+                if (t1.action_run == flow_def_t1_0__action_type_t.decrement_ttl) {
+                    angelic_assert(true);
+                    if (hdr.ipv4.isValid() && hdr.ipv4.isValid()) {
+                        hdr.ipv4.ttl = hdr.ipv4.ttl + 8w255;
+                    }
+                    else {
+                        bug();
+                    }
+                }
+                else {
+                    ;
+                }
             }
         }
-        end_l2_valid_0();
-        tmp_3 = query_l3_valid_0(hdr.ipv4.ttl);
-        l3_valid = tmp_3;
-        if (l3_valid.hit) {
-            key_match(hdr.ipv4.ttl == l3_valid.key_l3_valid_0_hdr_ipv4_ttl);
-            if (!hdr.ipv4.isValid()) {
-                bug();
-            }
-        }
-        if (l3_valid.action_run == flow_def_l3_valid_0__action_type_t.NoAction_4) {
-            angelic_assert(true);
-        }
-        else {
-            if (l3_valid.action_run == flow_def_l3_valid_0__action_type_t.drop_3) {
-                angelic_assert(true);
-                standard_metadata.egress_spec = 9w511;
-                __track_egress_spec_0 = true;
-            }
-            else {
-                ;
-            }
-        }
-        end_l3_valid_0();
-        tmp_4 = query_punt_0(hdr.ethernet.dstAddr, hdr.ipv4.dstAddr);
-        punt = tmp_4;
-        if (punt.hit) {
-            key_match(hdr.ethernet.dstAddr & punt.key_punt_0_hdr_ethernet_dstAddr__mask == punt.key_punt_0_hdr_ethernet_dstAddr__val & punt.key_punt_0_hdr_ethernet_dstAddr__mask && hdr.ipv4.dstAddr & punt.key_punt_0_hdr_ipv4_dstAddr__mask == punt.key_punt_0_hdr_ipv4_dstAddr__val & punt.key_punt_0_hdr_ipv4_dstAddr__mask);
-            if (!(hdr.ethernet.isValid() || punt.key_punt_0_hdr_ethernet_dstAddr__mask == 48w0)) {
-                bug();
-            }
-            if (!(hdr.ipv4.isValid() || punt.key_punt_0_hdr_ipv4_dstAddr__mask == 32w0)) {
-                bug();
-            }
-        }
-        if (punt.action_run == flow_def_punt_0__action_type_t.NoAction_5) {
-            angelic_assert(true);
-        }
-        else {
-            if (punt.action_run == flow_def_punt_0__action_type_t.ctrl) {
-                angelic_assert(true);
-                standard_metadata.egress_spec = 9w510;
-                __track_egress_spec_0 = true;
-            }
-            else {
-                ;
-            }
-        }
-        end_punt_0();
+        end_t1_0();
         if (!__track_egress_spec_0) {
             bug();
         }
     }
 }
 
-control MyEgress(inout headers hdr, inout metadata meta, inout standard_metadata_t standard_metadata) {
+control DeparserImpl(mutable_packet packet, in headers hdr) {
     apply {
+        packet.emit<ethernet_t>(hdr.ethernet);
+        packet.emit<ipv4_t>(hdr.ipv4);
+        packet.emit<tcp_t>(hdr.tcp);
     }
 }
 
@@ -245,17 +186,17 @@ struct tuple_0 {
     bit<32> field_9;
 }
 
-control MyComputeChecksum(inout headers hdr, inout metadata meta) {
+control verifyChecksum(inout headers hdr, inout metadata meta) {
     apply {
     }
 }
 
-control MyDeparser(mutable_packet packet, in headers hdr) {
+control computeChecksum(inout headers hdr, inout metadata meta) {
     apply {
     }
 }
 
-V1Switch<headers, metadata>(MyParser(), MyVerifyChecksum(), MyIngress(), MyEgress(), MyComputeChecksum(), MyDeparser()) main;
+V1Switch<headers, metadata>(ParserImpl(), verifyChecksum(), ingress(), egress(), computeChecksum(), DeparserImpl()) main;
 
 void copy_field_list(in metadata from, inout metadata to, in standard_metadata_t smfrom, inout standard_metadata_t smto, in bit<16> discriminator) {
 }
@@ -306,9 +247,9 @@ void PSAImpl_egress_start_(mutable_packet p, inout headers hdrs_, inout metadata
     CloneSessionId_t clone_field_list_0;
     clone_session_t cs_0;
     bit<32> recirculate_flag_0;
-    MyEgress() eg;
+    egress() eg;
     ;
-    MyDeparser() dep;
+    DeparserImpl() dep;
     ;
     clone_sm_0 = standard_meta;
     clone_hdrs_0 = hdrs_;
@@ -334,7 +275,7 @@ void PSAImpl_egress_start_(mutable_packet p, inout headers hdrs_, inout metadata
     recirculate_flag_0 = standard_meta.recirculate_flag;
     if (recirculate_flag_0 != 32w0) {
         {
-            clone_metas_0.l3_admit = 1w0;
+            clone_metas_0._custom_metadata_nhop_ipv40 = 32w0;
         }
         copy_field_list(metas_, clone_metas_0, standard_meta, clone_sm_0, (bit<16>)recirculate_flag_0);
         clone_sm_0.resubmit_flag = (bit<32>)32w0;
@@ -358,7 +299,7 @@ void PSAImpl_ingress_start_(mutable_packet p, inout headers hdrs_, inout metadat
     bit<32> resubmit_flag_0;
     clone_session_t cs_1;
     clone_session_t ms_0;
-    MyIngress() ig;
+    ingress() ig;
     ;
     clone_sm_1 = standard_meta;
     clone_hdrs_1 = hdrs_;
@@ -417,9 +358,10 @@ void parse_and_run_(mutable_packet pin, inout metadata metas_, inout standard_me
     {
         hdrs.ethernet.setInvalid();
         hdrs.ipv4.setInvalid();
-        hdrs.ipv6.setInvalid();
+        hdrs.tcp.setInvalid();
+        hdrs.ipv4_2.setInvalid();
     }
-    MyParser() p;
+    ParserImpl() p;
     ;
     last_0 = error.NoError;
     p.apply(pin, hdrs, metas_, standard_meta, last_0);
@@ -479,7 +421,7 @@ void run() {
     standard_meta_0.ingress_port = p_0;
     standard_meta_0.ingress_global_timestamp = now();
     {
-        metas.l3_admit = 1w0;
+        metas._custom_metadata_nhop_ipv40 = 32w0;
     }
     standard_meta_0.instance_type = PKT_INSTANCE_TYPE_NORMAL_0;
     parse_and_run(pin, metas, standard_meta_0);

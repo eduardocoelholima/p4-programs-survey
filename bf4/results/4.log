@@ -1,6 +1,6 @@
 cleaned up /home/ecl7037/code/p4-programs-survey/bf4/egress_spec.p4 -> ./egress_spec-clean.p4. Validating...
-done instrumentation in 463ms
-done primitive expansion in 565ms
-done integration in 679ms
+done instrumentation in 437ms
+done primitive expansion in 519ms
+done integration in 618ms
 All set. To run bf4:
 p4c-analysis ./egress_spec-integrated.p4

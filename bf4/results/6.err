@@ -1,12 +1,15 @@
+/home/ecl7037/code/p4-programs-survey/bf4/egress_spec.p4(113): [--Wwarn=unused] warning: Table l2_valid is not used; removing
+    table l2_valid {
+          ^^^^^^^^
 starting frontend
 ./egress_spec-integrated.p4(17): [--Wwarn=unknown] warning: Unknown annotation: readonly
 extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
                                              ^^^^^^^^
 ./egress_spec-integrated.p4(31): [--Wwarn=unknown] warning: Unknown annotation: matchKind
-    @matchKind("exact")
+    @matchKind("ternary")
      ^^^^^^^^^
-./egress_spec-integrated.p4(35): [--Wwarn=unknown] warning: Unknown annotation: controlled
-@controlled extern flow_def_l3_valid_0 query_l3_valid_0(@matchKind("exact") in bit<8> l3_valid_0_hdr_ipv4_ttl);
+./egress_spec-integrated.p4(41): [--Wwarn=unknown] warning: Unknown annotation: controlled
+@controlled extern flow_def_punt_0 query_punt_0(@matchKind("ternary") in bit<48> punt_0_hdr_ethernet_dstAddr, @matchKind("ternary") in bit<32> punt_0_hdr_ipv4_dstAddr);
  ^^^^^^^^^^
 /usr/local/share/p4c/p4include/v1model.p4(31): [--Wwarn=unknown] warning: Unknown annotation: metadata
 @metadata @name("standard_metadata")
@@ -20,30 +23,30 @@ extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
 /usr/local/share/p4c/p4include/v1model.p4(460): [--Wwarn=unknown] warning: Unknown annotation: deparser
 @deparser
  ^^^^^^^^
-./egress_spec-integrated.p4(280): [--Wwarn=unknown] warning: Unknown annotation: noreturn
+./egress_spec-integrated.p4(241): [--Wwarn=unknown] warning: Unknown annotation: noreturn
 @impl("parse_and_run_") @noreturn extern void parse_and_run(mutable_packet pin, inout metadata metas_, inout standard_metadata_t standard_meta);
                          ^^^^^^^^
-frontend done in 1076ms
+frontend done in 1032ms
 done unrolling 0 24 in 0ms
-done graph buildup  1036 in 49ms, linking in 3ms
-done chaotic iterations 1036, iters: 1046 in 32 ms
-done constant propagation #nodes:1036 #vars:459 in 99ms
-done constant propagation and simplification #nodes:1036 vs 510 #foldings:167 in:130ms
-done unrolling 0 510 in 4ms
-intra-basic block simplifications 29ms
-done chaotic iterations 45, iters: 45 in 3 ms
-dom tree simplifications for 112,386/479
-dom tree simplifications for 112,0/93
-dom tree simplifications for 386/45 49ms
-simplified 1,393 if conditions
-boundaries computed: 4 in 0ms
-WARNING: __track_egress_spec_MyIngress:7 is not live at query_punt_0
-WARNING: __track_egress_spec_MyIngress:7 is not live at query_punt_0
-WARNING: __track_egress_spec_MyIngress:7 is not live at query_punt_0
-WARNING: __track_egress_spec_MyIngress:7 is not live at query_punt_0
-WARNING: __track_egress_spec_MyIngress:7 is not live at query_punt_0
-WARNING: __track_egress_spec_MyIngress:7 is not live at query_punt_0
-obtained specs: 0 in 12ms
+done graph buildup  1021 in 45ms, linking in 3ms
+done chaotic iterations 1021, iters: 1030 in 28 ms
+done constant propagation #nodes:1021 #vars:451 in 96ms
+done constant propagation and simplification #nodes:1021 vs 495 #foldings:166 in:127ms
+done unrolling 0 495 in 4ms
+intra-basic block simplifications 27ms
+done chaotic iterations 37, iters: 37 in 3 ms
+dom tree simplifications for 104,380/455
+dom tree simplifications for 104,0/75
+dom tree simplifications for 380/37 49ms
+simplified 1,386 if conditions
+boundaries computed: 3 in 0ms
+WARNING: __track_egress_spec_MyIngress:5 is not live at query_punt_0
+WARNING: __track_egress_spec_MyIngress:5 is not live at query_punt_0
+WARNING: __track_egress_spec_MyIngress:5 is not live at query_punt_0
+WARNING: __track_egress_spec_MyIngress:5 is not live at query_punt_0
+WARNING: __track_egress_spec_MyIngress:5 is not live at query_punt_0
+WARNING: __track_egress_spec_MyIngress:5 is not live at query_punt_0
+obtained specs: 0 in 9ms
 don't care reasoning done in 0 ms
 building parent decision tree 0ms
 partitioning hdr_MyParser.ipv4.valid_:3 took 0ms
@@ -53,16 +56,11 @@ refined decision tree __track_egress_spec_MyIngress:3 in 0ms
 partitioning standard_meta_PSAImpl_ingress_start.egress_spec:3 took 0ms
 refined decision tree standard_meta_PSAImpl_ingress_start.egress_spec:3 in 0ms
 building parent decision tree 0ms
-partitioning __track_egress_spec_MyIngress:7 took 0ms
-refined decision tree __track_egress_spec_MyIngress:7 in 0ms
-partitioning standard_meta_PSAImpl_ingress_start.egress_spec:7 took 0ms
-refined decision tree standard_meta_PSAImpl_ingress_start.egress_spec:7 in 0ms
-building parent decision tree 0ms
 partitioning __track_egress_spec_MyIngress:5 took 0ms
 refined decision tree __track_egress_spec_MyIngress:5 in 0ms
 partitioning standard_meta_PSAImpl_ingress_start.egress_spec:5 took 0ms
 refined decision tree standard_meta_PSAImpl_ingress_start.egress_spec:5 in 0ms
-slicing bug 0 51/77 took 2ms
+slicing bug 0 43/60 took 1ms
 building parent decision tree 0ms
 partitioning hdr_MyParser.ipv4.valid_:3 took 0ms
 building parent decision tree 0ms
@@ -71,34 +69,31 @@ refined decision tree __track_egress_spec_MyIngress:3 in 0ms
 building parent decision tree 0ms
 partitioning __track_egress_spec_MyIngress:5 took 0ms
 refined decision tree __track_egress_spec_MyIngress:5 in 0ms
-building parent decision tree 0ms
-partitioning __track_egress_spec_MyIngress:7 took 0ms
-refined decision tree __track_egress_spec_MyIngress:7 in 0ms
-check result:sat #assertions:76 time:6ms
+check result:sat #assertions:64 time:5ms
 get model time:0ms
 sat in 1 iters, 0ms
-check result:sat #assertions:77 time:0ms
+check result:sat #assertions:65 time:0ms
 get model time:0ms
 sat in 1 iters, 0ms
-check result:sat #assertions:78 time:0ms
+check result:sat #assertions:66 time:0ms
 get model time:0ms
 sat in 1 iters, 0ms
-check result:unsat #assertions:79 time:0ms
+check result:unsat #assertions:67 time:0ms
 without specs 3 bugs in 8ms
-check result:sat #assertions:76 time:0ms
+check result:sat #assertions:64 time:0ms
 get model time:0ms
 sat in 1 iters, 0ms
-slicing bug 3 22/30 took 0ms
+slicing bug 3 22/22 took 0ms
 bug 3,missing fixes at table query_l3_valid_0: hdr_MyParser.ipv4.valid_:3
-check result:sat #assertions:77 time:0ms
+check result:sat #assertions:65 time:0ms
 get model time:0ms
 sat in 1 iters, 0ms
-slicing bug 2 22/41 took 1ms
+slicing bug 2 22/33 took 0ms
 bug 2,missing fixes at table query_punt_0: hdr_MyParser.ipv4.valid_:3
-check result:sat #assertions:78 time:0ms
+check result:sat #assertions:66 time:0ms
 get model time:0ms
 sat in 1 iters, 0ms
-slicing bug 1 39/49 took 1ms
-bug 1,missing fixes at table query_punt_0: __track_egress_spec_MyIngress:5
-check result:unsat #assertions:79 time:0ms
-with specs 3 bugs in 6ms
+slicing bug 1 31/41 took 0ms
+bug 1,missing fixes at table query_punt_0: __track_egress_spec_MyIngress:3
+check result:unsat #assertions:67 time:0ms
+with specs 3 bugs in 5ms

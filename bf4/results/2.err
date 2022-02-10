@@ -1,0 +1,63 @@
+/home/ecl7037/code/p4-programs-survey/bf4/egress_spec.p4(123): [--Wwarn=unused] warning: Table l3_valid is not used; removing
+    table l3_valid {
+          ^^^^^^^^
+/home/ecl7037/code/p4-programs-survey/bf4/egress_spec.p4(128): [--Wwarn=unused] warning: Table punt is not used; removing
+    table punt {
+          ^^^^
+starting frontend
+./egress_spec-integrated.p4(17): [--Wwarn=unknown] warning: Unknown annotation: readonly
+extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
+                                             ^^^^^^^^
+./egress_spec-integrated.p4(31): [--Wwarn=unknown] warning: Unknown annotation: matchKind
+    @matchKind("exact")
+     ^^^^^^^^^
+./egress_spec-integrated.p4(35): [--Wwarn=unknown] warning: Unknown annotation: controlled
+@controlled extern flow_def_l2_valid_0 query_l2_valid_0(@matchKind("exact") in bit<48> l2_valid_0_hdr_ethernet_srcAddr);
+ ^^^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(31): [--Wwarn=unknown] warning: Unknown annotation: metadata
+@metadata @name("standard_metadata")
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(59): [--Wwarn=unknown] warning: Unknown annotation: alias
+    @alias("queueing_metadata.enq_timestamp")
+     ^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(442): [--Wwarn=unknown] warning: Unknown annotation: pipeline
+@pipeline
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(460): [--Wwarn=unknown] warning: Unknown annotation: deparser
+@deparser
+ ^^^^^^^^
+./egress_spec-integrated.p4(193): [--Wwarn=unknown] warning: Unknown annotation: noreturn
+@impl("parse_and_run_") @noreturn extern void parse_and_run(mutable_packet pin, inout metadata metas_, inout standard_metadata_t standard_meta);
+                         ^^^^^^^^
+frontend done in 991ms
+done unrolling 0 24 in 0ms
+done graph buildup  1002 in 42ms, linking in 3ms
+done chaotic iterations 1002, iters: 1009 in 27 ms
+done constant propagation #nodes:1002 #vars:437 in 97ms
+done constant propagation and simplification #nodes:1002 vs 476 #foldings:166 in:126ms
+done unrolling 0 476 in 4ms
+intra-basic block simplifications 26ms
+done chaotic iterations 25, iters: 25 in 2 ms
+dom tree simplifications for 92,373/423
+dom tree simplifications for 92,0/50
+dom tree simplifications for 373/25 38ms
+simplified 1,379 if conditions
+boundaries computed: 2 in 0ms
+obtained specs: 6 in 15ms
+don't care reasoning done in 0 ms
+building parent decision tree 0ms
+partitioning __track_egress_spec_MyIngress:3 took 0ms
+refined decision tree __track_egress_spec_MyIngress:3 in 0ms
+partitioning standard_meta_PSAImpl_ingress_start.egress_spec:3 took 0ms
+refined decision tree standard_meta_PSAImpl_ingress_start.egress_spec:3 in 0ms
+slicing bug 0 23/37 took 1ms
+building parent decision tree 0ms
+partitioning __track_egress_spec_MyIngress:3 took 0ms
+refined decision tree __track_egress_spec_MyIngress:3 in 0ms
+check result:sat #assertions:32 time:5ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:unsat #assertions:33 time:0ms
+without specs 1 bugs in 6ms
+check result:unsat #assertions:38 time:0ms
+with specs 0 bugs in 0ms

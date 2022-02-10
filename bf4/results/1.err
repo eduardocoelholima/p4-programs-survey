@@ -1,0 +1,69 @@
+starting frontend
+./egress_spec-integrated.p4(17): [--Wwarn=unknown] warning: Unknown annotation: readonly
+extern void copyPacket(mutable_packet self, @readonly mutable_packet other);
+                                             ^^^^^^^^
+./egress_spec-integrated.p4(31): [--Wwarn=unknown] warning: Unknown annotation: matchKind
+    @matchKind("exact")
+     ^^^^^^^^^
+./egress_spec-integrated.p4(35): [--Wwarn=unknown] warning: Unknown annotation: controlled
+@controlled extern flow_def_l3_valid_0 query_l3_valid_0(@matchKind("exact") in bit<8> l3_valid_0_hdr_ipv4_ttl);
+ ^^^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(31): [--Wwarn=unknown] warning: Unknown annotation: metadata
+@metadata @name("standard_metadata")
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(59): [--Wwarn=unknown] warning: Unknown annotation: alias
+    @alias("queueing_metadata.enq_timestamp")
+     ^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(442): [--Wwarn=unknown] warning: Unknown annotation: pipeline
+@pipeline
+ ^^^^^^^^
+/usr/local/share/p4c/p4include/v1model.p4(460): [--Wwarn=unknown] warning: Unknown annotation: deparser
+@deparser
+ ^^^^^^^^
+./egress_spec-integrated.p4(193): [--Wwarn=unknown] warning: Unknown annotation: noreturn
+@impl("parse_and_run_") @noreturn extern void parse_and_run(mutable_packet pin, inout metadata metas_, inout standard_metadata_t standard_meta);
+                         ^^^^^^^^
+frontend done in 990ms
+done unrolling 0 24 in 0ms
+done graph buildup  1002 in 42ms, linking in 3ms
+done chaotic iterations 1002, iters: 1009 in 26 ms
+done constant propagation #nodes:1002 #vars:437 in 90ms
+done constant propagation and simplification #nodes:1002 vs 476 #foldings:165 in:124ms
+done unrolling 0 476 in 4ms
+intra-basic block simplifications 27ms
+done chaotic iterations 27, iters: 27 in 3 ms
+dom tree simplifications for 94,371/425
+dom tree simplifications for 94,0/54
+dom tree simplifications for 371/27 39ms
+simplified 1,376 if conditions
+boundaries computed: 2 in 0ms
+obtained specs: 6 in 13ms
+don't care reasoning done in 0 ms
+building parent decision tree 0ms
+partitioning hdr_MyParser.ipv4.valid_:3 took 0ms
+building parent decision tree 0ms
+partitioning __track_egress_spec_MyIngress:3 took 0ms
+refined decision tree __track_egress_spec_MyIngress:3 in 0ms
+partitioning standard_meta_PSAImpl_ingress_start.egress_spec:3 took 0ms
+refined decision tree standard_meta_PSAImpl_ingress_start.egress_spec:3 in 0ms
+slicing bug 0 31/41 took 1ms
+building parent decision tree 0ms
+partitioning hdr_MyParser.ipv4.valid_:3 took 0ms
+building parent decision tree 0ms
+partitioning __track_egress_spec_MyIngress:3 took 0ms
+refined decision tree __track_egress_spec_MyIngress:3 in 0ms
+check result:sat #assertions:45 time:5ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:sat #assertions:46 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+check result:unsat #assertions:47 time:0ms
+without specs 2 bugs in 7ms
+check result:sat #assertions:51 time:0ms
+get model time:0ms
+sat in 1 iters, 0ms
+slicing bug 2 22/22 took 0ms
+bug 2,missing fixes at table query_l3_valid_0: hdr_MyParser.ipv4.valid_:3
+check result:unsat #assertions:52 time:0ms
+with specs 1 bugs in 1ms

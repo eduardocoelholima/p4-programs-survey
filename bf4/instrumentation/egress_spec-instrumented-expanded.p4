@@ -13,21 +13,6 @@ struct flow_def_l3_valid_0 {
 
 @controlled() extern flow_def_l3_valid_0 query_l3_valid_0(@matchKind("exact") in bit<8> l3_valid_0_hdr_ipv4_ttl);
 extern void end_l3_valid_0();
-enum flow_def_l2_valid_0__action_type_t {
-    drop_1,
-    NoAction_0
-}
-
-struct flow_def_l2_valid_0 {
-    bool                               hit;
-    bool                               reach;
-    flow_def_l2_valid_0__action_type_t action_run;
-    @matchKind("exact") 
-    bit<48>                            key_l2_valid_0_hdr_ethernet_srcAddr;
-}
-
-@controlled() extern flow_def_l2_valid_0 query_l2_valid_0(@matchKind("exact") in bit<48> l2_valid_0_hdr_ethernet_srcAddr);
-extern void end_l2_valid_0();
 enum flow_def_punt_0__action_type_t {
     ctrl,
     NoAction_5
@@ -49,6 +34,21 @@ struct flow_def_punt_0 {
 
 @controlled() extern flow_def_punt_0 query_punt_0(@matchKind("ternary") in bit<48> punt_0_hdr_ethernet_dstAddr, @matchKind("ternary") in bit<32> punt_0_hdr_ipv4_dstAddr);
 extern void end_punt_0();
+enum flow_def_l2_valid_0__action_type_t {
+    drop_1,
+    NoAction_0
+}
+
+struct flow_def_l2_valid_0 {
+    bool                               hit;
+    bool                               reach;
+    flow_def_l2_valid_0__action_type_t action_run;
+    @matchKind("exact") 
+    bit<48>                            key_l2_valid_0_hdr_ethernet_srcAddr;
+}
+
+@controlled() extern flow_def_l2_valid_0 query_l2_valid_0(@matchKind("exact") in bit<48> l2_valid_0_hdr_ethernet_srcAddr);
+extern void end_l2_valid_0();
 extern void key_match(in bool condition);
 extern void angelic_assert(in bool condition);
 extern void bug();
